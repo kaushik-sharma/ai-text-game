@@ -6,7 +6,7 @@ class Themes {
     useMaterial3: true,
     fontFamily: FontFamilies.zenDots,
     scaffoldBackgroundColor: Colors.black,
-    colorScheme: ColorScheme.dark(
+    colorScheme: const ColorScheme.dark(
       primary: Colors.white,
     ),
   );

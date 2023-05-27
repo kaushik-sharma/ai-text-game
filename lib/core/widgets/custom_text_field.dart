@@ -13,20 +13,20 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
-        border: _buildInputBorder(),
-        enabledBorder: _buildInputBorder(),
+        border: _buildInputBorder(Colors.white30),
+        enabledBorder: _buildInputBorder(Colors.white30),
         errorBorder: _buildInputBorder(Colors.red),
-        focusedBorder: _buildInputBorder(),
-        disabledBorder: _buildInputBorder(Colors.grey),
+        focusedBorder: _buildInputBorder(Colors.white),
+        disabledBorder: _buildInputBorder(Colors.white30),
         focusedErrorBorder: _buildInputBorder(Colors.red),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 20,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 25,
+          vertical: 15,
         ),
         suffixIcon: IconButton(
           onPressed: onSuffixPress,
           iconSize: 34,
-          icon: Icon(Icons.chevron_right),
+          icon: const Icon(Icons.chevron_right_rounded),
         ),
       ),
       keyboardType: TextInputType.multiline,
@@ -34,19 +34,19 @@ class CustomTextField extends StatelessWidget {
       minLines: 1,
       maxLines: 4,
       textInputAction: TextInputAction.newline,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 14,
         color: Colors.white,
       ),
     );
   }
 
-  OutlineInputBorder _buildInputBorder([Color color = Colors.white]) {
+  OutlineInputBorder _buildInputBorder(Color color) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(35),
+      borderRadius: BorderRadius.circular(30),
       borderSide: BorderSide(
         color: color,
-        width: 2.0,
+        width: 1.0,
       ),
     );
   }

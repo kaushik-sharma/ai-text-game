@@ -15,10 +15,10 @@ abstract class GameDataSource {
 class GameDataSourceImpl implements GameDataSource {
   @override
   Future<MessageModel> sendMessage(List<MessageEntity> messages) async {
-    final nI = NetworkInfoImpl(connectionChecker: sl());
-    final bool isConnected = await nI.isConnected;
+    final networkInfo = NetworkInfoImpl(connectionChecker: sl());
+    final bool isConnected = await networkInfo.isConnected;
     if (!isConnected) {
-      throw InternetException();
+      throw const InternetException();
     }
 
     final Dio dio = Dio();
@@ -46,12 +46,12 @@ class GameDataSourceImpl implements GameDataSource {
     );
 
     if (response.statusCode != 200) {
-      throw ServerException();
+      throw const ServerException();
     }
 
     final data = response.data?['choices'] as List<dynamic>?;
     if (data == null) {
-      throw ServerException();
+      throw const ServerException();
     }
 
     return MessageModel.fromMap(

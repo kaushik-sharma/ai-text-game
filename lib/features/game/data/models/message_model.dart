@@ -21,23 +21,24 @@ class MessageModel extends MessageEntity {
 
   @override
   String toString() {
-    return 'MessageModel{' + ' role: $role,' + ' content: $content,' + '}';
+    return 'MessageModel{ role: $role, content: $content,}';
   }
 
   MessageModel copyWith({
-    Role? author,
+    Role? role,
     String? content,
+    String? id,
   }) {
     return MessageModel(
-      role: author ?? this.role,
+      role: role ?? this.role,
       content: content ?? this.content,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'author': this.role,
-      'content': this.content,
+      'author': role,
+      'content': content,
     };
   }
 

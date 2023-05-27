@@ -9,18 +9,23 @@ import '../../domain/entities/message_entity.dart';
 part 'game_event.dart';
 part 'game_state.dart';
 
+bool shouldAnimate = false;
+
 class GameBloc extends Bloc<GameEvent, GameState> {
   final SendMessageUseCase sendMessageUseCase;
 
-  GameBloc({required this.sendMessageUseCase}) : super(GameInitialState()) {
+  GameBloc({required this.sendMessageUseCase})
+      : super(const GameInitialState()) {
     on<SendMessageEvent>(_onSendMessageEvent);
   }
 
   Future<void> _onSendMessageEvent(
       SendMessageEvent event, Emitter<GameState> emit) async {
+    shouldAnimate = false;
+
     final content = event.messageContent.trim();
     if (content.isEmpty) {
-      emit(InputInvalidState());
+      emit(const InputInvalidState());
       return;
     }
 
@@ -33,7 +38,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     );
     failureOrSuccess.fold<void>(
       (left) => emit(ChatCompletionFailureState(left.message)),
-      (right) => emit(ChatCompletionSuccessState(right)),
+      (right) {
+        shouldAnimate = true;
+        emit(ChatCompletionSuccessState(right));
+      },
     );
   }
 }
