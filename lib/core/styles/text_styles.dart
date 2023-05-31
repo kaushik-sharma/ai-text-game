@@ -1,3 +1,1 @@
-class FontFamilies {
-  static const String zenDots = 'ZenDots';
-}
+const String kZenDots = 'ZenDots';

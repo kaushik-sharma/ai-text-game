@@ -1,38 +1,20 @@
-import 'dart:convert';
-
 import 'package:ai_text_game/features/game/domain/entities/message_entity.dart';
 import 'package:ai_text_game/features/game/presentation/blocs/game_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 
-class TextCard extends StatefulWidget {
+class TextCard extends StatelessWidget {
   final MessageEntity message;
-  final bool isLast;
+  final bool isFirst;
 
   const TextCard({
     Key? key,
     required this.message,
-    required this.isLast,
+    required this.isFirst,
   }) : super(key: key);
 
-  @override
-  State<TextCard> createState() => _TextCardState();
-}
-
-class _TextCardState extends State<TextCard> {
-  final FlutterTts _flutterTts = FlutterTts();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.isLast && shouldAnimate) {
-      _speak();
-    }
-  }
-
-  Stream<int> _yieldCharacter() async* {
-    final content = widget.message.content;
-    final initialIndex = widget.isLast && shouldAnimate ? 0 : content.length;
+  Stream<int> _yieldCharacters() async* {
+    final content = message.content;
+    final initialIndex = isFirst && shouldAnimate ? 0 : content.length;
     for (var i = initialIndex; i < content.length + 1; i++) {
       yield i;
       await Future<void>.delayed(const Duration(milliseconds: 60));
@@ -40,28 +22,16 @@ class _TextCardState extends State<TextCard> {
     shouldAnimate = false;
   }
 
-  Future<void> _speak() async {
-    // await _flutterTts.setSpeechRate(1.5);
-    await _flutterTts
-        .setVoice({"name": "en-us-x-iol-local", "locale": "en-US"});
-
-    // print();
-    final formattedJson = const JsonEncoder.withIndent('  ')
-        .convert(await _flutterTts.getDefaultVoice);
-    debugPrint(formattedJson);
-    await _flutterTts.speak(widget.message.content);
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       initialData: 0,
-      stream: _yieldCharacter(),
+      stream: _yieldCharacters(),
       builder: (context, snapshot) => Text(
-        widget.message.content.substring(0, snapshot.data),
+        message.content.substring(0, snapshot.data),
+        textAlign: message.role == Role.user ? TextAlign.right : TextAlign.left,
         style: TextStyle(
-          color:
-              widget.message.role == Role.user ? Colors.white38 : Colors.white,
+          color: message.role == Role.user ? Colors.white60 : Colors.white,
           fontSize: 14,
         ),
       ),

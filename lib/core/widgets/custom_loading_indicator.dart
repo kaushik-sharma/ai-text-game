@@ -37,7 +37,7 @@ class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 8,
+      height: 6,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
@@ -46,9 +46,9 @@ class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
         itemCount: (_controller.value * _maxDots).floor() + 1,
         itemBuilder: (context, index) => const CircleAvatar(
           backgroundColor: Colors.white54,
-          radius: 4,
+          radius: 3,
         ),
-        separatorBuilder: (context, index) => const SizedBox(width: 10),
+        separatorBuilder: (context, index) => const SizedBox(width: 5),
       ),
     );
   }

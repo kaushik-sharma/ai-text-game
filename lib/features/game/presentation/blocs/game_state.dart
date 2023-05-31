@@ -44,3 +44,10 @@ class ChatCompletionFailureState extends GameState {
   @override
   List<Object> get props => [error];
 }
+
+class GameInitializingState extends GameState {
+  const GameInitializingState();
+
+  @override
+  List<Object> get props => [];
+}

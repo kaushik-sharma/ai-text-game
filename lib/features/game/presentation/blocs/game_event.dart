@@ -13,3 +13,12 @@ class SendMessageEvent extends GameEvent {
   @override
   List<Object> get props => [prevMessages, messageContent];
 }
+
+class InitializeGameEvent extends GameEvent {
+  final String theme;
+
+  const InitializeGameEvent(this.theme);
+
+  @override
+  List<Object> get props => [theme];
+}

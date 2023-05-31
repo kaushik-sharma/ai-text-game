@@ -19,39 +19,49 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   final GameBloc _bloc = sl<GameBloc>();
   final List<MessageEntity> _messages = [];
-  final TextEditingController _controller = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
+  final TextEditingController _textController = TextEditingController();
   bool _isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final args =
+          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+      final theme = args['theme'] as String;
+      _bloc.add(
+        InitializeGameEvent(theme),
+      );
+    });
+  }
+
+  @override
   void dispose() {
-    _controller.dispose();
+    _textController.dispose();
     super.dispose();
   }
 
   void _sendMessage() {
-    _bloc.add(SendMessageEvent(_messages, _controller.text));
+    _bloc.add(SendMessageEvent(_messages, _textController.text));
   }
 
   void _blocListener(BuildContext context, GameState state) {
+    if (state is GameInitializingState) {
+      _isLoading = true;
+    }
     if (state is InputValidState) {
-      _controller.clear();
-      _messages.add(state.message);
+      _textController.clear();
+      _messages.insert(0, state.message);
       _isLoading = true;
     }
     if (state is InputInvalidState) {}
     if (state is ChatCompletionSuccessState) {
+      _messages.insert(0, state.message);
       _isLoading = false;
-      _messages.add(state.message);
-      _scrollController.jumpTo(
-        _scrollController.position.maxScrollExtent,
-      );
     }
     if (state is ChatCompletionFailureState) {
       _isLoading = false;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(state.error)),
-      );
+      UiHelpers.showSnackBar(context, state.error);
     }
   }
 
@@ -60,31 +70,31 @@ class _GamePageState extends State<GamePage> {
       children: [
         Expanded(
           child: ListView.separated(
-            controller: _scrollController,
+            reverse: true,
+            padding: EdgeInsets.zero,
             itemCount: _messages.length,
             itemBuilder: (context, index) => TextCard(
+              key: UniqueKey(),
               message: _messages[index],
-              isLast: index == _messages.length - 1,
+              isFirst: index == 0,
             ),
-            separatorBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Divider(
-                color: Colors.grey.withOpacity(0.25),
-                thickness: 0.5,
-              ),
+            separatorBuilder: (context, index) => SizedBox(
+              key: UniqueKey(),
+              height: 20,
             ),
           ),
         ),
-        const SizedBox(height: 10),
-        if (_isLoading)
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: CustomLoadingIndicator(),
-          ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 30),
         CustomTextField(
-          controller: _controller,
-          onSuffixPress: _sendMessage,
+          controller: _textController,
+          onFieldSubmitted: _isLoading ? (_) {} : (_) => _sendMessage(),
+          suffix: _isLoading
+              ? const CustomLoadingIndicator()
+              : IconButton(
+                  onPressed: _sendMessage,
+                  iconSize: 34,
+                  icon: const Icon(Icons.chevron_right_rounded),
+                ),
         ),
       ],
     );
@@ -97,6 +107,7 @@ class _GamePageState extends State<GamePage> {
       child: GestureDetector(
         onTap: () => UiHelpers.hideKeyboard(),
         child: Scaffold(
+          appBar: AppBar(),
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(20),

@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
-  final VoidCallback onSuffixPress;
+  final Widget suffix;
+  final void Function(String) onFieldSubmitted;
 
   const CustomTextField(
-      {Key? key, required this.controller, required this.onSuffixPress})
+      {Key? key,
+      required this.controller,
+      required this.suffix,
+      required this.onFieldSubmitted})
       : super(key: key);
 
   @override
@@ -13,6 +17,7 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
+        hintText: 'Type your response',
         border: _buildInputBorder(Colors.white30),
         enabledBorder: _buildInputBorder(Colors.white30),
         errorBorder: _buildInputBorder(Colors.red),
@@ -23,17 +28,15 @@ class CustomTextField extends StatelessWidget {
           horizontal: 25,
           vertical: 15,
         ),
-        suffixIcon: IconButton(
-          onPressed: onSuffixPress,
-          iconSize: 34,
-          icon: const Icon(Icons.chevron_right_rounded),
-        ),
+        suffixIcon: suffix,
       ),
-      keyboardType: TextInputType.multiline,
-      textCapitalization: TextCapitalization.sentences,
-      minLines: 1,
-      maxLines: 4,
-      textInputAction: TextInputAction.newline,
+      keyboardType: TextInputType.number,
+      // textCapitalization: TextCapitalization.sentences,
+      // minLines: 1,
+      // maxLines: 4,
+      // textInputAction: TextInputAction.newline,
+      textInputAction: TextInputAction.send,
+      onFieldSubmitted: onFieldSubmitted,
       style: const TextStyle(
         fontSize: 14,
         color: Colors.white,

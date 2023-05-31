@@ -1,4 +1,4 @@
-import 'package:ai_text_game/features/game/presentation/pages/game_page.dart';
+import 'package:ai_text_game/features/splash/presentation/pages/splash_page.dart';
 import 'package:ai_text_game/routes/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: '',
       theme: Themes.dark,
       navigatorKey: kNavigatorKey,
-      home: const GamePage(),
+      home: const SplashPage(),
     );
   }
 }

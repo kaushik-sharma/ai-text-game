@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class Themes {
   static final ThemeData dark = ThemeData(
     useMaterial3: true,
-    fontFamily: FontFamilies.zenDots,
+    fontFamily: kZenDots,
     scaffoldBackgroundColor: Colors.black,
     colorScheme: const ColorScheme.dark(
       primary: Colors.white,
