@@ -1,9 +1,9 @@
 import 'package:ai_text_game/core/helpers/ui_helpers.dart';
-import 'package:ai_text_game/features/game/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../injection_container.dart';
+import '../../../game/presentation/pages/theme_page.dart';
 import '../blocs/user_bloc.dart';
 
 class SplashPage extends StatefulWidget {
@@ -32,7 +32,7 @@ class _SplashPageState extends State<SplashPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomePage(),
+          builder: (context) => const ThemePage(),
         ),
       );
     }
@@ -44,7 +44,20 @@ class _SplashPageState extends State<SplashPage> {
       create: (context) => _bloc,
       child: BlocConsumer<UserBloc, UserState>(
         listener: _blocListener,
-        builder: (context, state) => const Scaffold(),
+        builder: (context, state) => const Scaffold(
+          body: Padding(
+            padding: EdgeInsets.all(20),
+            child: Center(
+              child: Text(
+                'AI TEXT GAME',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 26,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
