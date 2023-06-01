@@ -44,14 +44,14 @@ class _SplashPageState extends State<SplashPage> {
       create: (context) => _bloc,
       child: BlocConsumer<UserBloc, UserState>(
         listener: _blocListener,
-        builder: (context, state) => const Scaffold(
+        builder: (context, state) => Scaffold(
           body: Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Center(
               child: Text(
-                'AI TEXT GAME',
+                'AI Adventure'.toUpperCase(),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 26,
                 ),
               ),
