@@ -25,7 +25,7 @@ class _ThemePageState extends State<ThemePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      // appBar: AppBar(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -47,7 +47,7 @@ class _ThemePageState extends State<ThemePage> {
                     child: CustomButton(
                       text: _storyThemes[index],
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const GamePage(),
