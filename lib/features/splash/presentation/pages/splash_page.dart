@@ -14,47 +14,47 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  final UserBloc _bloc = sl<UserBloc>();
+  // final UserBloc _bloc = sl<UserBloc>();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _bloc.add(const CreateUserEvent());
-    });
-  }
-
-  void _blocListener(BuildContext context, UserState state) {
-    if (state is UserCreatedFailureState) {
-      UiHelpers.showSnackBar(context, state.message);
-    }
-    if (state is UserCreatedSuccessState) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Future<void>.delayed(Duration(seconds: 2));
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => const ThemePage(),
         ),
       );
-    }
+    });
   }
+
+  // void _blocListener(BuildContext context, UserState state) {
+  //   if (state is UserCreatedFailureState) {
+  //     UiHelpers.showSnackBar(context, state.message);
+  //   }
+  //   if (state is UserCreatedSuccessState) {
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => const ThemePage(),
+  //       ),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<UserBloc>(
-      create: (context) => _bloc,
-      child: BlocConsumer<UserBloc, UserState>(
-        listener: _blocListener,
-        builder: (context, state) => Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Center(
-              child: Text(
-                'AI Adventure'.toUpperCase(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 26,
-                ),
-              ),
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Center(
+          child: Text(
+            'AI Adventure'.toUpperCase(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 26,
             ),
           ),
         ),
