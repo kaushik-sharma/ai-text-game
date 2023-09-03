@@ -1,4 +1,9 @@
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+
+import '../constants/app_values.dart';
+import '../network/network_info.dart';
+import 'exceptions.dart';
 
 abstract class Failure extends Equatable {
   final String message;
@@ -37,7 +42,26 @@ class GeneralFailure extends Failure {
   List<Object> get props => [message];
 }
 
-const String serverFailureMessage = 'Server failure occurred.';
-const String cacheFailureMessage = 'Cache failure occurred.';
-const String generalFailureMessage = 'Some failure occurred.';
-const String internetFailureMessage = 'No Internet connection.';
+Future<Either<Failure, T>> kRepositoryImpl<T, P>({
+  required NetworkInfo networkInfo,
+  required Future<T> Function(P) callback,
+  required P callbackParam,
+}) async {
+  try {
+    final bool isConnected = await networkInfo.isConnected;
+    if (!isConnected) {
+      return const Left(InternetFailure(kInternetFailureMessage));
+    }
+
+    final T result = await callback(callbackParam);
+    return Right(result);
+  } on CacheException {
+    return const Left(CacheFailure(kCacheFailureMessage));
+  } on ServerException {
+    return const Left(ServerFailure(kServerFailureMessage));
+  } on InternetException {
+    return const Left(InternetFailure(kInternetFailureMessage));
+  } catch (e) {
+    return const Left(GeneralFailure(kGeneralFailureMessage));
+  }
+}

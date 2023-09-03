@@ -1,26 +1,36 @@
 import 'dart:convert';
 
-import 'package:ai_text_game/core/constants/urls.dart';
-import 'package:ai_text_game/core/errors/exceptions.dart';
-import 'package:ai_text_game/features/game/data/models/message_model.dart';
-import 'package:ai_text_game/features/game/domain/entities/message_entity.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../core/constants/app_data.dart';
+import '../../../../core/constants/app_urls.dart';
+import '../../../../core/errors/exceptions.dart';
+import '../../../../core/helpers/storage_helpers.dart';
+import '../models/message_model.dart';
 
 abstract class GameDataSource {
-  Future<MessageModel> sendMessage(
-      String deviceId, List<MessageEntity> messages);
+  Future<MessageModel> sendMessage(GameData gameData);
 }
 
 class GameDataSourceImpl implements GameDataSource {
+  final SharedPreferences sharedPreferences;
+
+  const GameDataSourceImpl({
+    required this.sharedPreferences,
+  });
+
   @override
-  Future<MessageModel> sendMessage(
-      String deviceId, List<MessageEntity> messages) async {
+  Future<MessageModel> sendMessage(GameData gameData) async {
+    await StorageHelpers.saveGame(
+        sharedPreferences, GameData(gameData.theme, [...gameData.messages]));
+
     final Dio dio = Dio();
-    final Response<Map<String, dynamic>> response = await dio.post(
-      chatCompletionUrl,
+    final Response<Map<String, dynamic>> response =
+        await dio.post<Map<String, dynamic>>(
+      kChatCompletionUrl,
       data: jsonEncode({
-        'deviceId': deviceId,
-        'messages': messages
+        'messages': gameData.messages.reversed
             .map(
               (message) => {
                 'role': message.role.name,
@@ -35,13 +45,12 @@ class GameDataSourceImpl implements GameDataSource {
       throw const ServerException();
     }
 
-    final data = response.data?['choices'] as List<dynamic>?;
-    if (data == null) {
-      throw const ServerException();
-    }
+    final MessageModel receivedMessage =
+        MessageModel.fromMap(response.data as Map<String, dynamic>);
 
-    return MessageModel.fromMap(
-      data[0] as Map<String, dynamic>,
-    );
+    await StorageHelpers.saveGame(sharedPreferences,
+        GameData(gameData.theme, [receivedMessage, ...gameData.messages]));
+
+    return receivedMessage;
   }
 }

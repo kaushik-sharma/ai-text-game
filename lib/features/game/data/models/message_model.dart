@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import '../../../../core/helpers/enum_helpers.dart';
 import '../../domain/entities/message_entity.dart';
 
 class MessageModel extends MessageEntity {
   const MessageModel({
+    required super.id,
     required super.role,
     required super.content,
   });
@@ -13,23 +15,25 @@ class MessageModel extends MessageEntity {
       identical(this, other) ||
       (other is MessageModel &&
           runtimeType == other.runtimeType &&
+          id == other.id &&
           role == other.role &&
           content == other.content);
 
   @override
-  int get hashCode => role.hashCode ^ content.hashCode;
+  int get hashCode => id.hashCode ^ role.hashCode ^ content.hashCode;
 
   @override
   String toString() {
-    return 'MessageModel{ role: $role, content: $content,}';
+    return 'MessageModel{ id: $id, role: $role, content: $content,}';
   }
 
   MessageModel copyWith({
+    String? id,
     Role? role,
     String? content,
-    String? id,
   }) {
     return MessageModel(
+      id: id ?? this.id,
       role: role ?? this.role,
       content: content ?? this.content,
     );
@@ -37,21 +41,19 @@ class MessageModel extends MessageEntity {
 
   Map<String, dynamic> toMap() {
     return {
-      'author': role,
+      'id': id,
+      'role': EnumHelpers.convertToString(role),
       'content': content,
     };
   }
 
   factory MessageModel.fromMap(Map<String, dynamic> map) {
-    final message = map['message'] as Map<String, dynamic>;
-
-    final Role role = Role.values.firstWhere(
-      (role) => message['role'] as String == role.name,
-    );
-
     return MessageModel(
-      role: role,
-      content: message['content'] as String,
+      id: map['id'] as String? ?? '',
+      role: EnumHelpers.convertToEnum<Role>(
+              Role.values, map['role'] as String? ?? '') ??
+          Role.user,
+      content: map['content'] as String? ?? '',
     );
   }
 

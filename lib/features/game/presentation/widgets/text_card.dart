@@ -1,25 +1,31 @@
-import 'package:ai_text_game/features/game/domain/entities/message_entity.dart';
-import 'package:ai_text_game/features/game/presentation/blocs/game_bloc.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/helpers/enum_helpers.dart';
+import '../../domain/entities/message_entity.dart';
+import '../blocs/game_bloc.dart';
+
 class TextCard extends StatelessWidget {
+  final GameBloc gameBloc;
   final MessageEntity message;
-  final bool isFirst;
+  final bool shouldAnimate;
 
   const TextCard({
-    Key? key,
+    super.key,
+    required this.gameBloc,
     required this.message,
-    required this.isFirst,
-  }) : super(key: key);
+    required this.shouldAnimate,
+  });
 
   Stream<int> _yieldCharacters() async* {
     final content = message.content;
-    final initialIndex = isFirst && shouldAnimate ? 0 : content.length;
+    final initialIndex = shouldAnimate ? 0 : content.length;
     for (var i = initialIndex; i < content.length + 1; i++) {
       yield i;
-      await Future<void>.delayed(const Duration(milliseconds: 60));
+      await Future<void>.delayed(const Duration(milliseconds: 50));
     }
-    shouldAnimate = false;
+    if (shouldAnimate) {
+      gameBloc.add(const AnimationCompleteEvent());
+    }
   }
 
   @override

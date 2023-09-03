@@ -1,12 +1,13 @@
-import 'package:ai_text_game/core/helpers/ui_helpers.dart';
-import 'package:ai_text_game/core/widgets/custom_loading_indicator.dart';
-import 'package:ai_text_game/core/widgets/custom_text_field.dart';
-import 'package:ai_text_game/features/game/presentation/blocs/game_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/constants/app_values.dart';
+import '../../../../core/helpers/ui_helpers.dart';
+import '../../../../core/widgets/custom_loading_indicator.dart';
+import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../injection_container.dart';
 import '../../domain/entities/message_entity.dart';
+import '../blocs/game_bloc.dart';
 import '../widgets/text_card.dart';
 
 class GamePage extends StatefulWidget {
@@ -18,86 +19,38 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   final GameBloc _bloc = sl<GameBloc>();
+
+  late final String _theme;
   final List<MessageEntity> _messages = [];
+  final List<MessageEntity> _displayMessages = [];
+
   final TextEditingController _textController = TextEditingController();
+
   bool _isLoading = false;
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final args =
-          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-      final theme = args['theme'] as String;
-      _bloc.add(
-        InitializeGameEvent(theme),
-      );
-    });
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+
+    _theme = args['theme'] as String;
+    final messages = args['messages'] as List<MessageEntity>?;
+    if (messages != null) {
+      _messages.addAll([...messages]);
+      _displayMessages.addAll([..._messages]);
+      _displayMessages.removeLast();
+      return;
+    }
+
+    _bloc.add(InitializeGameEvent(_theme));
   }
 
   @override
   void dispose() {
     _textController.dispose();
     super.dispose();
-  }
-
-  void _sendMessage() {
-    _bloc.add(SendMessageEvent(_messages, _textController.text));
-  }
-
-  void _blocListener(BuildContext context, GameState state) {
-    if (state is GameInitializingState) {
-      _isLoading = true;
-    }
-    if (state is InputValidState) {
-      _textController.clear();
-      _messages.insert(0, state.message);
-      _isLoading = true;
-    }
-    if (state is InputInvalidState) {}
-    if (state is ChatCompletionSuccessState) {
-      _messages.insert(0, state.message);
-      _isLoading = false;
-    }
-    if (state is ChatCompletionFailureState) {
-      _isLoading = false;
-      UiHelpers.showSnackBar(context, state.error);
-    }
-  }
-
-  Widget _blocBuilder(BuildContext context, GameState state) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.separated(
-            reverse: true,
-            padding: EdgeInsets.zero,
-            itemCount: _messages.length,
-            itemBuilder: (context, index) => TextCard(
-              key: UniqueKey(),
-              message: _messages[index],
-              isFirst: index == 0,
-            ),
-            separatorBuilder: (context, index) => SizedBox(
-              key: UniqueKey(),
-              height: 20,
-            ),
-          ),
-        ),
-        const SizedBox(height: 30),
-        CustomTextField(
-          controller: _textController,
-          onFieldSubmitted: _isLoading ? (_) {} : (_) => _sendMessage(),
-          suffix: _isLoading
-              ? const CustomLoadingIndicator()
-              : IconButton(
-                  onPressed: _sendMessage,
-                  iconSize: 34,
-                  icon: const Icon(Icons.chevron_right_rounded),
-                ),
-        ),
-      ],
-    );
   }
 
   @override
@@ -107,10 +60,13 @@ class _GamePageState extends State<GamePage> {
       child: GestureDetector(
         onTap: () => UiHelpers.hideKeyboard(),
         child: Scaffold(
-          appBar: AppBar(),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.only(
+                left: kScaffoldPadding,
+                right: kScaffoldPadding,
+                bottom: kScaffoldPadding,
+              ),
               child: BlocConsumer<GameBloc, GameState>(
                 listener: _blocListener,
                 builder: _blocBuilder,
@@ -119,6 +75,65 @@ class _GamePageState extends State<GamePage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _sendMessage() {
+    _bloc.add(SendMessageEvent(_theme, _messages, _textController.text));
+  }
+
+  void _blocListener(BuildContext context, GameState state) {
+    if (state is InputValidState) {
+      _textController.clear();
+      _messages.insert(0, state.message);
+      if (_messages.length > 1) {
+        _displayMessages.insert(0, state.message);
+      }
+      _isLoading = true;
+    }
+    if (state is InputInvalidState) {}
+    if (state is ChatCompletionSuccessState) {
+      _messages.insert(0, state.message);
+      _displayMessages.insert(0, state.message);
+      _isLoading = false;
+    }
+    if (state is ChatCompletionFailureState) {
+      UiHelpers.showSnackBar(context, state.error);
+      _isLoading = false;
+    }
+  }
+
+  Widget _blocBuilder(BuildContext context, GameState state) {
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.separated(
+            reverse: true,
+            padding: const EdgeInsets.only(top: kScaffoldPadding),
+            itemCount: _displayMessages.length,
+            itemBuilder: (context, index) => TextCard(
+              key: ValueKey<String>(_displayMessages[index].id),
+              gameBloc: _bloc,
+              message: _displayMessages[index],
+              shouldAnimate: index == 0 && shouldAnimate,
+            ),
+            separatorBuilder: (context, index) => const SizedBox(height: 20),
+          ),
+        ),
+        const SizedBox(height: kScaffoldPadding),
+        CustomTextField(
+          controller: _textController,
+          onFieldSubmitted:
+              _isLoading || shouldAnimate ? null : (_) => _sendMessage(),
+          suffix: _isLoading || shouldAnimate
+              ? const CustomLoadingIndicator()
+              : IconButton(
+                  onPressed: _sendMessage,
+                  iconSize: 34,
+                  icon: const Icon(Icons.chevron_right_rounded),
+                ),
+        ),
+      ],
     );
   }
 }

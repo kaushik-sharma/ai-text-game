@@ -46,7 +46,8 @@ class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
         itemCount: (_controller.value * _maxDots).floor() + 1,
         itemBuilder: (context, index) => const CircleAvatar(
           backgroundColor: Colors.white54,
-          radius: 3,
+          minRadius: 3,
+          maxRadius: 3,
         ),
         separatorBuilder: (context, index) => const SizedBox(width: 5),
       ),

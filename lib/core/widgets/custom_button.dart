@@ -1,47 +1,68 @@
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatelessWidget {
-  final String text;
-  final Color backgroundColor;
-  final Color foregroundColor;
-  final double textSize;
-  final VoidCallback onTap;
+import '../helpers/enum_helpers.dart';
+import '../styles/app_text_styles.dart';
 
-  const CustomButton(
-      {Key? key,
-      required this.text,
-      required this.backgroundColor,
-      required this.foregroundColor,
-      required this.textSize,
-      required this.onTap})
-      : super(key: key);
+class CustomButton extends StatelessWidget {
+  final String title;
+  final VoidCallback? onTap;
+  final ButtonMode buttonMode;
+  final bool isCompact;
+  final double fontSize;
+
+  const CustomButton.primary({
+    super.key,
+    required this.title,
+    required this.onTap,
+    this.isCompact = false,
+    this.fontSize = 20,
+  }) : buttonMode = ButtonMode.primary;
+
+  const CustomButton.secondary({
+    super.key,
+    required this.title,
+    required this.onTap,
+    this.isCompact = false,
+    this.fontSize = 18,
+  }) : buttonMode = ButtonMode.secondary;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      customBorder: const StadiumBorder(),
-      onTap: onTap,
-      child: Container(
-        decoration: ShapeDecoration(
-          shape: const StadiumBorder(
-            side: BorderSide(
-              color: Colors.white,
-            ),
-          ),
-          color: backgroundColor,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: foregroundColor,
-            fontSize: textSize,
-          ),
-        ),
-      ),
-    );
+    return _mapModeToButton();
   }
+
+  Widget _mapModeToButton() {
+    switch (buttonMode) {
+      case ButtonMode.primary:
+        return _buildPrimaryButton();
+      case ButtonMode.secondary:
+        return _buildSecondaryButton();
+    }
+  }
+
+  Widget _buildPrimaryButton() => ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          visualDensity: isCompact ? VisualDensity.compact : null,
+          textStyle: TextStyle(
+            fontSize: fontSize,
+            overflow: TextOverflow.ellipsis,
+            fontFamily: kFontFamilyZenDots,
+          ),
+        ),
+        onPressed: onTap,
+        child: Text(title),
+      );
+
+  Widget _buildSecondaryButton() => OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          visualDensity: isCompact ? VisualDensity.compact : null,
+          textStyle: TextStyle(
+            fontSize: fontSize,
+            overflow: TextOverflow.ellipsis,
+            fontFamily: kFontFamilyZenDots,
+          ),
+        ),
+        onPressed: onTap,
+        child: Text(title),
+      );
 }
