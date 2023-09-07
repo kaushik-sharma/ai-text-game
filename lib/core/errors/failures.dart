@@ -47,21 +47,33 @@ Future<Either<Failure, T>> kRepositoryImpl<T, P>({
   required Future<T> Function(P) callback,
   required P callbackParam,
 }) async {
-  try {
-    final bool isConnected = await networkInfo.isConnected;
-    if (!isConnected) {
-      return const Left(InternetFailure(kInternetFailureMessage));
-    }
+  const int maxTries = 3;
+  int currentIteration = 0;
+  late Either<Failure, T> failure;
 
-    final T result = await callback(callbackParam);
-    return Right(result);
-  } on CacheException {
-    return const Left(CacheFailure(kCacheFailureMessage));
-  } on ServerException {
-    return const Left(ServerFailure(kServerFailureMessage));
-  } on InternetException {
-    return const Left(InternetFailure(kInternetFailureMessage));
-  } catch (e) {
-    return const Left(GeneralFailure(kGeneralFailureMessage));
+  while (currentIteration < maxTries) {
+    try {
+      final bool isConnected = await networkInfo.isConnected;
+      if (!isConnected) {
+        throw const InternetException();
+      }
+
+      final T result = await callback(callbackParam);
+      return Right(result);
+    } on CacheException {
+      currentIteration++;
+      failure = const Left(CacheFailure(kCacheFailureMessage));
+    } on ServerException {
+      currentIteration++;
+      failure = const Left(ServerFailure(kServerFailureMessage));
+    } on InternetException {
+      currentIteration++;
+      failure = const Left(InternetFailure(kInternetFailureMessage));
+    } catch (e) {
+      currentIteration++;
+      failure = const Left(GeneralFailure(kGeneralFailureMessage));
+    }
   }
+
+  return failure;
 }

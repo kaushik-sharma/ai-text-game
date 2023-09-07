@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -41,12 +42,16 @@ class GameDataSourceImpl implements GameDataSource {
       }),
     );
 
-    if (response.statusCode != 200) {
+    final int statusCode = response.data?['statusCode'] as int? ?? 400;
+
+    if (statusCode != 200) {
       throw const ServerException();
     }
 
-    final MessageModel receivedMessage =
-        MessageModel.fromMap(response.data as Map<String, dynamic>);
+    final Map<String, dynamic> data =
+        response.data?['data'] as Map<String, dynamic>? ?? {};
+
+    final MessageModel receivedMessage = MessageModel.fromMap(data);
 
     await StorageHelpers.saveGame(sharedPreferences,
         GameData(gameData.theme, [receivedMessage, ...gameData.messages]));

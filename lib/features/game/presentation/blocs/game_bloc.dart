@@ -26,8 +26,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Future<void> _onSendMessageEvent(
       SendMessageEvent event, Emitter<GameState> emit) async {
-    shouldAnimate = false;
-
     final content = event.messageContent.trim();
     if (content.isEmpty) {
       emit(const InputInvalidState());
@@ -52,8 +50,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Future<void> _onInitializeGameEvent(
       InitializeGameEvent event, Emitter<GameState> emit) async {
-    shouldAnimate = false;
-
     final content = 'Start a text adventure game with ${event.theme} theme. '
         'The game should start with an initial setting. '
         'After this the player should be presented with 3 options to choose from, '
