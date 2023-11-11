@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_data.dart';
-import '../../../../core/helpers/enum_helpers.dart';
+import '../../../../core/constants/enums.dart';
 import '../../data/models/message_model.dart';
 import '../../domain/entities/message_entity.dart';
 import '../../domain/usecases/send_message_usecase.dart';

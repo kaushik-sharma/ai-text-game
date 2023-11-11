@@ -61,17 +61,15 @@ Future<Either<Failure, T>> kRepositoryImpl<T, P>({
       final T result = await callback(callbackParam);
       return Right(result);
     } on CacheException {
-      currentIteration++;
       failure = const Left(CacheFailure(kCacheFailureMessage));
     } on ServerException {
-      currentIteration++;
       failure = const Left(ServerFailure(kServerFailureMessage));
     } on InternetException {
-      currentIteration++;
       failure = const Left(InternetFailure(kInternetFailureMessage));
     } catch (e) {
-      currentIteration++;
       failure = const Left(GeneralFailure(kGeneralFailureMessage));
+    } finally {
+      currentIteration++;
     }
   }
 

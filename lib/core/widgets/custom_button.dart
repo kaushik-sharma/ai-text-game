@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../helpers/enum_helpers.dart';
+import '../constants/enums.dart';
 import '../styles/app_text_styles.dart';
 
 class CustomButton extends StatelessWidget {

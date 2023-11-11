@@ -1,4 +1,4 @@
-import '../../../../core/helpers/enum_helpers.dart';
+import '../../../../core/constants/enums.dart';
 
 class MessageEntity {
   final String id;

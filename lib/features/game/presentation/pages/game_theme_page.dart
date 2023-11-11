@@ -16,22 +16,24 @@ class _GameThemePageState extends State<GameThemePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(kScaffoldPadding),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Select a story theme to start the game:',
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary, fontSize: 20),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: kScaffoldPadding,
+          ),
+          child: CustomScrollView(
+            slivers: [
+              const SliverToBoxAdapter(
+                  child: SizedBox(height: kScaffoldPadding)),
+              SliverToBoxAdapter(
+                child: Text(
+                  'Select a story theme to start the game:',
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 20),
+                ),
               ),
-              const SizedBox(height: 20),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.zero,
+              const SliverToBoxAdapter(child: SizedBox(height: 20)),
+              SliverList.separated(
                 itemCount: kStoryThemes.length,
                 itemBuilder: (context, index) => Align(
                   alignment: Alignment.centerLeft,
@@ -45,6 +47,8 @@ class _GameThemePageState extends State<GameThemePage> {
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: 10),
               ),
+              const SliverToBoxAdapter(
+                  child: SizedBox(height: kScaffoldPadding)),
             ],
           ),
         ),

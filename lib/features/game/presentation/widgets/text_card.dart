@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/helpers/enum_helpers.dart';
+import '../../../../core/constants/enums.dart';
 import '../../domain/entities/message_entity.dart';
 import '../blocs/game_bloc.dart';
 

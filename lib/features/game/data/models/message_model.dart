@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../../../core/helpers/enum_helpers.dart';
+import '../../../../core/constants/enums.dart';
 import '../../domain/entities/message_entity.dart';
 
 class MessageModel extends MessageEntity {
@@ -42,7 +42,7 @@ class MessageModel extends MessageEntity {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'role': EnumHelpers.convertToString(role),
+      'role': role.name,
       'content': content,
     };
   }
@@ -50,9 +50,7 @@ class MessageModel extends MessageEntity {
   factory MessageModel.fromMap(Map<String, dynamic> map) {
     return MessageModel(
       id: map['id'] as String? ?? '',
-      role: EnumHelpers.convertToEnum<Role>(
-              Role.values, map['role'] as String? ?? '') ??
-          Role.user,
+      role: Role.fromName(map['role'] as String? ?? ''),
       content: map['content'] as String? ?? '',
     );
   }
