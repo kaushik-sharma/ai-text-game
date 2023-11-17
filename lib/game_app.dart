@@ -16,6 +16,9 @@ class GameApp extends StatelessWidget {
       navigatorKey: kNavigatorKey,
       initialRoute: AppRoutes.splash,
       onGenerateRoute: CustomNavigator.onGenerateRoute,
+      scrollBehavior: ScrollConfiguration.of(context).copyWith(
+        physics: const BouncingScrollPhysics(),
+      ),
     );
   }
 }
