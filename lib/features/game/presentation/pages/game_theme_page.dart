@@ -41,7 +41,6 @@ class _GameThemePageState extends State<GameThemePage> {
                     title: kStoryThemes[index],
                     onTap: () => _startGame(kStoryThemes[index]),
                     isCompact: true,
-                    fontSize: 13,
                   ),
                 ),
                 separatorBuilder: (context, index) =>

@@ -11,7 +11,14 @@ import '../blocs/game_bloc.dart';
 import '../widgets/text_card.dart';
 
 class GamePage extends StatefulWidget {
-  const GamePage({Key? key}) : super(key: key);
+  final String theme;
+  final List<MessageEntity>? messages;
+
+  const GamePage({
+    super.key,
+    required this.theme,
+    this.messages,
+  });
 
   @override
   State<GamePage> createState() => _GamePageState();
@@ -20,7 +27,6 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   final GameBloc _bloc = sl<GameBloc>();
 
-  late final String _theme;
   final List<MessageEntity> _messages = [];
   final List<MessageEntity> _displayMessages = [];
 
@@ -29,22 +35,16 @@ class _GamePageState extends State<GamePage> {
   bool _isLoading = false;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
 
-    final args =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-
-    _theme = args['theme'] as String;
-    final messages = args['messages'] as List<MessageEntity>?;
-    if (messages != null) {
-      _messages.addAll([...messages]);
-      _displayMessages.addAll([..._messages]);
-      _displayMessages.removeLast();
+    if (widget.messages == null) {
+      _bloc.add(InitializeGameEvent(widget.theme));
       return;
     }
-
-    _bloc.add(InitializeGameEvent(_theme));
+    _messages.addAll([...widget.messages!]);
+    _displayMessages.addAll([...widget.messages!]);
+    _displayMessages.removeLast();
   }
 
   @override
@@ -79,7 +79,7 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _sendMessage() {
-    _bloc.add(SendMessageEvent(_theme, _messages, _textController.text));
+    _bloc.add(SendMessageEvent(widget.theme, _messages, _textController.text));
   }
 
   void _blocListener(BuildContext context, GameState state) {
@@ -112,10 +112,10 @@ class _GamePageState extends State<GamePage> {
             padding: const EdgeInsets.only(top: kScaffoldPadding),
             itemCount: _displayMessages.length,
             itemBuilder: (context, index) => TextCard(
-              key: ValueKey<String>(_displayMessages[index].id),
-              gameBloc: _bloc,
+              key: UniqueKey(),
               message: _displayMessages[index],
               shouldAnimate: index == 0 && shouldAnimate,
+              onAnimComplete: () => _bloc.add(const AnimationCompleteEvent()),
             ),
             separatorBuilder: (context, index) => const SizedBox(height: 20),
           ),

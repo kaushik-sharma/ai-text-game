@@ -8,14 +8,12 @@ class CustomButton extends StatelessWidget {
   final VoidCallback? onTap;
   final ButtonMode buttonMode;
   final bool isCompact;
-  final double fontSize;
 
   const CustomButton.primary({
     super.key,
     required this.title,
     required this.onTap,
     this.isCompact = false,
-    this.fontSize = 20,
   }) : buttonMode = ButtonMode.primary;
 
   const CustomButton.secondary({
@@ -23,7 +21,6 @@ class CustomButton extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.isCompact = false,
-    this.fontSize = 18,
   }) : buttonMode = ButtonMode.secondary;
 
   @override
@@ -44,7 +41,7 @@ class CustomButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           visualDensity: isCompact ? VisualDensity.compact : null,
           textStyle: TextStyle(
-            fontSize: fontSize,
+            fontSize: isCompact ? 13 : 20,
             overflow: TextOverflow.ellipsis,
             fontFamily: kFontFamilyZenDots,
           ),
@@ -57,7 +54,7 @@ class CustomButton extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           visualDensity: isCompact ? VisualDensity.compact : null,
           textStyle: TextStyle(
-            fontSize: fontSize,
+            fontSize: isCompact ? 13 : 18,
             overflow: TextOverflow.ellipsis,
             fontFamily: kFontFamilyZenDots,
           ),

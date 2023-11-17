@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/enums.dart';
 import '../../domain/entities/message_entity.dart';
-import '../blocs/game_bloc.dart';
 
 class TextCard extends StatelessWidget {
-  final GameBloc gameBloc;
   final MessageEntity message;
   final bool shouldAnimate;
+  final VoidCallback onAnimComplete;
 
   const TextCard({
     super.key,
-    required this.gameBloc,
     required this.message,
     required this.shouldAnimate,
+    required this.onAnimComplete,
   });
 
   Stream<int> _yieldCharacters() async* {
@@ -24,7 +23,7 @@ class TextCard extends StatelessWidget {
       await Future<void>.delayed(const Duration(milliseconds: 50));
     }
     if (shouldAnimate) {
-      gameBloc.add(const AnimationCompleteEvent());
+      onAnimComplete();
     }
   }
 

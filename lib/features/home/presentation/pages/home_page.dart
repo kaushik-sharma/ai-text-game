@@ -107,17 +107,11 @@ class _HomePageState extends State<HomePage> {
     kSavedGame = null;
     setState(() {});
 
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
     final String? theme =
         await Navigator.pushNamed(context, AppRoutes.gameTheme) as String?;
-    if (theme == null) {
-      return;
-    }
-    if (!mounted) {
-      return;
-    }
+    if (theme == null) return;
+    if (!mounted) return;
     await Navigator.pushNamed(context, AppRoutes.game,
         arguments: {'theme': theme});
 
