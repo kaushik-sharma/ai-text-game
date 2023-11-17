@@ -22,12 +22,17 @@ class UiHelpers {
     required String title,
     required String content,
   }) async {
+    final TextStyle actionStyle = TextStyle(
+      fontSize: 12,
+      color: Theme.of(kNavigatorKey.currentContext!).colorScheme.primary,
+    );
+
     return await showDialog<bool>(
       context: kNavigatorKey.currentContext!,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        insetPadding: const EdgeInsets.all(20),
-        contentPadding: const EdgeInsets.all(20),
+        insetPadding: const EdgeInsets.all(kScaffoldPadding),
+        contentPadding: const EdgeInsets.all(kScaffoldPadding),
         title: Text(title),
         content: Text(content),
         actions: [
@@ -38,7 +43,7 @@ class UiHelpers {
             ),
             child: Text(
               'No',
-              style: _actionStyle,
+              style: actionStyle,
             ),
           ),
           TextButton(
@@ -48,7 +53,7 @@ class UiHelpers {
             ),
             child: Text(
               'Yes',
-              style: _actionStyle,
+              style: actionStyle,
             ),
           ),
         ],
@@ -56,8 +61,3 @@ class UiHelpers {
     );
   }
 }
-
-final TextStyle _actionStyle = TextStyle(
-  fontSize: 12,
-  color: Theme.of(kNavigatorKey.currentContext!).colorScheme.primary,
-);
