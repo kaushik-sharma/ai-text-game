@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_data.dart';
 import '../../../../core/helpers/storage_helpers.dart';
 import '../../../../core/managers/app_manager.dart';
-import '../../../../injection_container.dart';
 import '../../../../injection_container.dart' as di;
+import '../../../../injection_container.dart';
 import '../../../../routes/custom_navigator.dart';
 
 class SplashPage extends StatefulWidget {
-  const SplashPage({Key? key}) : super(key: key);
+  const SplashPage({super.key});
 
   @override
   State<SplashPage> createState() => _SplashPageState();

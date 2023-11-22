@@ -5,12 +5,13 @@ abstract class NetworkInfo {
 }
 
 class NetworkInfoImpl implements NetworkInfo {
-  final InternetConnectionCheckerPlus connectionChecker;
+  final InternetConnection internetConnection;
 
   const NetworkInfoImpl({
-    required this.connectionChecker,
+    required this.internetConnection,
   });
 
   @override
-  Future<bool> get isConnected async => await connectionChecker.hasConnection;
+  Future<bool> get isConnected async =>
+      await internetConnection.hasInternetAccess;
 }

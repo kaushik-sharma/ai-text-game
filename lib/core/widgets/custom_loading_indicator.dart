@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomLoadingIndicator extends StatefulWidget {
-  const CustomLoadingIndicator({Key? key}) : super(key: key);
+  const CustomLoadingIndicator({super.key});
 
   @override
   State<CustomLoadingIndicator> createState() => _CustomLoadingIndicatorState();

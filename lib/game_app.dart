@@ -5,7 +5,7 @@ import 'core/styles/app_themes.dart';
 import 'routes/custom_navigator.dart';
 
 class GameApp extends StatelessWidget {
-  const GameApp({Key? key}) : super(key: key);
+  const GameApp({super.key});
 
   @override
   Widget build(BuildContext context) {

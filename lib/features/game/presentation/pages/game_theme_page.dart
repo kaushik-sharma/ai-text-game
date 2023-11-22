@@ -5,7 +5,7 @@ import '../../../../core/constants/app_values.dart';
 import '../../../../core/widgets/custom_button.dart';
 
 class GameThemePage extends StatefulWidget {
-  const GameThemePage({Key? key}) : super(key: key);
+  const GameThemePage({super.key});
 
   @override
   State<GameThemePage> createState() => _GameThemePageState();
