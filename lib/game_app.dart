@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/constants/app_metadata.dart';
 import 'core/styles/app_themes.dart';
+import 'core/widgets/custom_scroll_physics.dart';
 import 'routes/custom_navigator.dart';
 
 class GameApp extends StatelessWidget {
@@ -19,9 +20,7 @@ class GameApp extends StatelessWidget {
         navigatorKey: kNavigatorKey,
         initialRoute: AppRoutes.splash,
         onGenerateRoute: CustomNavigator.onGenerateRoute,
-        scrollBehavior: ScrollConfiguration.of(context).copyWith(
-          physics: const BouncingScrollPhysics(),
-        ),
+        scrollBehavior: const CustomScrollPhysics(),
       ),
     );
   }
