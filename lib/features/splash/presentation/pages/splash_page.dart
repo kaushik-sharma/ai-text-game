@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/constants/app_data.dart';
 import '../../../../core/helpers/storage_helpers.dart';
@@ -32,11 +33,9 @@ class _SplashPageState extends State<SplashPage> {
     await di.init();
     await AppManager.init();
 
-    kSavedGame = await StorageHelpers.getSavedGame(sl());
+    kSavedGame = await StorageHelpers.getSavedGame(sl<SharedPreferences>());
 
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
     Navigator.pushReplacementNamed(context, AppRoutes.home);
   }
 }
