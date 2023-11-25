@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomScrollPhysics extends ScrollBehavior {
-  const CustomScrollPhysics();
+class CustomScrollBehavior extends ScrollBehavior {
+  const CustomScrollBehavior();
 
   @override
   Widget buildOverscrollIndicator(
