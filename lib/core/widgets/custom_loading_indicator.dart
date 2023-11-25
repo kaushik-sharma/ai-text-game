@@ -10,6 +10,7 @@ class CustomLoadingIndicator extends StatefulWidget {
 class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
+  final ValueNotifier<double> _controllerValue = ValueNotifier<double>(0.0);
   final int _maxDots = 3;
 
   @override
@@ -20,17 +21,15 @@ class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
       duration: const Duration(milliseconds: 600),
     );
     _controller.addListener(() {
-      if (_controller.isCompleted) {
-        _controller.repeat();
-      }
-      setState(() {});
+      _controllerValue.value = _controller.value;
     });
-    _controller.forward();
+    _controller.repeat();
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _controllerValue.dispose();
     super.dispose();
   }
 
@@ -38,18 +37,21 @@ class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
   Widget build(BuildContext context) {
     return SizedBox(
       height: 6,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.zero,
-        itemCount: (_controller.value * _maxDots).floor() + 1,
-        itemBuilder: (context, index) => const CircleAvatar(
-          backgroundColor: Colors.white54,
-          minRadius: 3,
-          maxRadius: 3,
+      child: ValueListenableBuilder<double>(
+        valueListenable: _controllerValue,
+        builder: (context, value, child) => ListView.separated(
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          itemCount: (value * _maxDots).floor() + 1,
+          itemBuilder: (context, index) => const CircleAvatar(
+            backgroundColor: Colors.white54,
+            minRadius: 3,
+            maxRadius: 3,
+          ),
+          separatorBuilder: (context, index) => const SizedBox(width: 5),
         ),
-        separatorBuilder: (context, index) => const SizedBox(width: 5),
       ),
     );
   }
