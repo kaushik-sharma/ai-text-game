@@ -1,5 +1,9 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 enum Role {
+  @JsonValue('user')
   user(name: 'user'),
+  @JsonValue('assistant')
   assistant(name: 'assistant');
 
   final String name;

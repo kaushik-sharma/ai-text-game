@@ -39,7 +39,7 @@ class _GamePageState extends State<GamePage> {
     super.initState();
 
     if (widget.messages == null) {
-      _bloc.add(InitializeGameEvent(widget.theme));
+      _bloc.add(GameEvent.initializeGame(widget.theme));
       return;
     }
     _messages.addAll([...widget.messages!]);
@@ -79,28 +79,33 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _sendMessage() {
-    _bloc.add(SendMessageEvent(widget.theme, _messages, _textController.text));
+    _bloc.add(
+        GameEvent.sendMessage(widget.theme, _messages, _textController.text));
   }
 
   void _blocListener(BuildContext context, GameState state) {
-    if (state is InputValidState) {
-      _textController.clear();
-      _messages.insert(0, state.message);
-      if (_messages.length > 1) {
-        _displayMessages.insert(0, state.message);
-      }
-      _isLoading = true;
-    }
-    if (state is InputInvalidState) {}
-    if (state is ChatCompletionSuccessState) {
-      _messages.insert(0, state.message);
-      _displayMessages.insert(0, state.message);
-      _isLoading = false;
-    }
-    if (state is ChatCompletionFailureState) {
-      UiHelpers.showSnackBar(context, state.error);
-      _isLoading = false;
-    }
+    state.when(
+      initial: () {},
+      inputValid: (message) {
+        _textController.clear();
+        _messages.insert(0, message);
+        if (_messages.length > 1) {
+          _displayMessages.insert(0, message);
+        }
+        _isLoading = true;
+      },
+      inputInvalid: () {},
+      chatCompletionSuccess: (message) {
+        _messages.insert(0, message);
+        _displayMessages.insert(0, message);
+        _isLoading = false;
+      },
+      chatCompletionFailure: (error) {
+        UiHelpers.showSnackBar(context, error);
+        _isLoading = false;
+      },
+      animationCompleteSuccess: () {},
+    );
   }
 
   Widget _blocBuilder(BuildContext context, GameState state) {
@@ -115,7 +120,8 @@ class _GamePageState extends State<GamePage> {
               key: UniqueKey(),
               message: _displayMessages[index],
               shouldAnimate: index == 0 && shouldAnimate,
-              onAnimComplete: () => _bloc.add(const AnimationCompleteEvent()),
+              onAnimComplete: () =>
+                  _bloc.add(const GameEvent.animationComplete()),
             ),
             separatorBuilder: (context, index) => const SizedBox(height: 20),
           ),

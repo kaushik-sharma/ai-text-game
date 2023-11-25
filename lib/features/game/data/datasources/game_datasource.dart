@@ -51,7 +51,7 @@ class GameDataSourceImpl implements GameDataSource {
     final Map<String, dynamic> data =
         response.data?['data'] as Map<String, dynamic>? ?? {};
 
-    final MessageModel receivedMessage = MessageModel.fromMap(data);
+    final MessageModel receivedMessage = MessageModel.fromJson(data);
 
     await StorageHelpers.saveGame(sharedPreferences,
         GameData(gameData.theme, [receivedMessage, ...gameData.messages]));

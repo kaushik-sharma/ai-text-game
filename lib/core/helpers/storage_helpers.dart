@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/game/data/models/message_model.dart';
@@ -11,7 +13,7 @@ class StorageHelpers {
     await instance.setString(kStorageKeyTheme, gameData.theme);
 
     final List<String> jsonStrings = _convertToModels(gameData.messages)
-        .map((message) => message.toJson(message.toMap()))
+        .map((message) => jsonEncode(message.toJson()))
         .toList();
     await instance.setStringList(kStorageKeyMessages, jsonStrings);
   }
@@ -26,8 +28,10 @@ class StorageHelpers {
       return null;
     }
 
-    final List<MessageModel> messageModels =
-        jsonMessages.map((message) => MessageModel.fromJson(message)).toList();
+    final List<MessageModel> messageModels = jsonMessages
+        .map((message) =>
+            MessageModel.fromJson(jsonDecode(message) as Map<String, dynamic>))
+        .toList();
 
     return GameData(theme, messageModels);
   }
