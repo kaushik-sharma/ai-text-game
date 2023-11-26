@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/constants/app_data.dart';
 import '../../../../core/constants/app_values.dart';
+import '../../../../core/helpers/storage_helpers.dart';
 import '../../../../core/helpers/ui_helpers.dart';
 import '../../../../core/widgets/custom_loading_indicator.dart';
 import '../../../../core/widgets/custom_text_field.dart';
@@ -28,7 +30,6 @@ class _GamePageState extends State<GamePage> {
   final GameBloc _bloc = sl<GameBloc>();
 
   final List<MessageEntity> _messages = [];
-  final List<MessageEntity> _displayMessages = [];
 
   final TextEditingController _textController = TextEditingController();
 
@@ -43,8 +44,6 @@ class _GamePageState extends State<GamePage> {
       return;
     }
     _messages.addAll([...widget.messages!]);
-    _displayMessages.addAll([...widget.messages!]);
-    _displayMessages.removeLast();
   }
 
   @override
@@ -89,19 +88,29 @@ class _GamePageState extends State<GamePage> {
       inputValid: (message) {
         _textController.clear();
         _messages.insert(0, message);
-        if (_messages.length > 1) {
-          _displayMessages.insert(0, message);
-        }
         _isLoading = true;
       },
       inputInvalid: () {},
       chatCompletionSuccess: (message) {
         _messages.insert(0, message);
-        _displayMessages.insert(0, message);
         _isLoading = false;
       },
-      chatCompletionFailure: (error) {
+      chatCompletionFailure: (error) async {
         UiHelpers.showSnackBar(context, error);
+
+        /// End current game on initialization failure
+        if (_messages.length == 1) {
+          await StorageHelpers.resetGame(sl());
+          kSavedGame = null;
+          if (!mounted) return;
+          Navigator.pop(context);
+          return;
+        }
+
+        /// Clear prev user response
+        _messages.removeAt(0);
+        await StorageHelpers.saveGame(sl(), GameData(widget.theme, _messages));
+
         _isLoading = false;
       },
       animationCompleteSuccess: () {},
@@ -109,16 +118,19 @@ class _GamePageState extends State<GamePage> {
   }
 
   Widget _blocBuilder(BuildContext context, GameState state) {
+    final List<MessageEntity> messages =
+        _messages.isNotEmpty ? _messages.sublist(0, _messages.length - 1) : [];
+
     return Column(
       children: [
         Expanded(
           child: ListView.separated(
             reverse: true,
             padding: const EdgeInsets.only(top: kScaffoldPadding),
-            itemCount: _displayMessages.length,
+            itemCount: messages.length,
             itemBuilder: (context, index) => TextCard(
               key: UniqueKey(),
-              message: _displayMessages[index],
+              message: messages[index],
               shouldAnimate: index == 0 && shouldAnimate,
               onAnimComplete: () =>
                   _bloc.add(const GameEvent.animationComplete()),
