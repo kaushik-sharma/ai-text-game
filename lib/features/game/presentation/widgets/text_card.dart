@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/enums.dart';
+import '../../data/models/message_model.dart';
 import '../../domain/entities/message_entity.dart';
 
 class TextCard extends StatelessWidget {

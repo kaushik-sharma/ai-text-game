@@ -1,4 +1,4 @@
-import '../../../../core/constants/enums.dart';
+import '../../data/models/message_model.dart';
 
 class MessageEntity {
   final String id;

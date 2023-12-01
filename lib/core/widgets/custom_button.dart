@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../gen/fonts.gen.dart';
-import '../constants/enums.dart';
+
+enum ButtonMode {
+  primary,
+  secondary,
+}
 
 class CustomButton extends StatelessWidget {
   final String title;
