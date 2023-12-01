@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../features/game/domain/entities/message_entity.dart';
@@ -17,7 +18,7 @@ class AppRoutes {
 
 class CustomNavigator {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
-    return MaterialPageRoute(
+    return CupertinoPageRoute(
       builder: (context) => _mapNameToRoute(settings),
       settings: settings,
     );
