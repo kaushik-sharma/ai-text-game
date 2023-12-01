@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../gen/fonts.gen.dart';
 import '../constants/enums.dart';
-import '../styles/app_text_styles.dart';
 
 class CustomButton extends StatelessWidget {
   final String title;
@@ -43,7 +43,7 @@ class CustomButton extends StatelessWidget {
           textStyle: TextStyle(
             fontSize: isCompact ? 13 : 20,
             overflow: TextOverflow.ellipsis,
-            fontFamily: kFontFamilyZenDots,
+            fontFamily: FontFamily.zenDots,
           ),
         ),
         onPressed: onTap,
@@ -56,7 +56,7 @@ class CustomButton extends StatelessWidget {
           textStyle: TextStyle(
             fontSize: isCompact ? 13 : 18,
             overflow: TextOverflow.ellipsis,
-            fontFamily: kFontFamilyZenDots,
+            fontFamily: FontFamily.zenDots,
           ),
         ),
         onPressed: onTap,

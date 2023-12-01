@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'app_text_styles.dart';
+import '../../gen/fonts.gen.dart';
 
 class AppThemes {
   static final ThemeData dark = ThemeData(
     useMaterial3: true,
-    fontFamily: kFontFamilyZenDots,
+    fontFamily: FontFamily.zenDots,
     scaffoldBackgroundColor: _scaffoldBackgroundColor,
     colorScheme: const ColorScheme.dark(
       primary: _primaryColor,
@@ -27,11 +27,11 @@ class AppThemes {
       ),
       titleTextStyle: const TextStyle(
         fontSize: 18,
-        fontFamily: kFontFamilyZenDots,
+        fontFamily: FontFamily.zenDots,
       ),
       contentTextStyle: const TextStyle(
         fontSize: 14,
-        fontFamily: kFontFamilyZenDots,
+        fontFamily: FontFamily.zenDots,
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
