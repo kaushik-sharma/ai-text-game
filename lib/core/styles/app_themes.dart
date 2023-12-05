@@ -57,6 +57,14 @@ class AppThemes {
         shape: const StadiumBorder(),
       ),
     ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: _primaryColor,
+      contentTextStyle: TextStyle(
+        fontSize: 12.sp,
+        color: _scaffoldBackgroundColor,
+        fontFamily: FontFamily.zenDots,
+      ),
+    ),
   );
 }
 

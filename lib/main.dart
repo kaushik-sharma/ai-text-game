@@ -7,11 +7,11 @@ import 'core/widgets/custom_scroll_behavior.dart';
 import 'routes/custom_navigator.dart';
 
 void main() {
-  runApp(const GameApp());
+  runApp(const _App());
 }
 
-class GameApp extends StatelessWidget {
-  const GameApp({super.key});
+class _App extends StatelessWidget {
+  const _App();
 
   @override
   Widget build(BuildContext context) {
