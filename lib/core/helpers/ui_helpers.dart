@@ -14,7 +14,7 @@ class UiHelpers {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: kSnackBarDuration,
+        duration: const Duration(seconds: 3),
       ),
     );
   }
