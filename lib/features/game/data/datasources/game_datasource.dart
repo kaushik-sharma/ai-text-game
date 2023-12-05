@@ -42,14 +42,14 @@ class GameDataSourceImpl implements GameDataSource {
       }),
     );
 
-    final int statusCode = response.data?['statusCode'] as int? ?? 400;
+    final int statusCode = response.data!['statusCode'] as int;
 
     if (statusCode != 200) {
       throw const ServerException();
     }
 
     final Map<String, dynamic> data =
-        response.data?['data'] as Map<String, dynamic>? ?? {};
+        response.data!['data'] as Map<String, dynamic>;
 
     final MessageModel receivedMessage = MessageModel.fromJson(data);
 
