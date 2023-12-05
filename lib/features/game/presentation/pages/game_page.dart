@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_data.dart';
 import '../../../../core/constants/app_values.dart';
@@ -61,7 +62,7 @@ class _GamePageState extends State<GamePage> {
         child: Scaffold(
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
                 left: kScaffoldPadding,
                 right: kScaffoldPadding,
                 bottom: kScaffoldPadding,
@@ -126,7 +127,7 @@ class _GamePageState extends State<GamePage> {
         Expanded(
           child: ListView.separated(
             reverse: true,
-            padding: const EdgeInsets.only(top: kScaffoldPadding),
+            padding: EdgeInsets.only(top: kScaffoldPadding),
             itemCount: messages.length,
             itemBuilder: (context, index) => TextCard(
               key: UniqueKey(),
@@ -135,10 +136,10 @@ class _GamePageState extends State<GamePage> {
               onAnimComplete: () =>
                   _bloc.add(const GameEvent.animationComplete()),
             ),
-            separatorBuilder: (context, index) => const SizedBox(height: 20),
+            separatorBuilder: (context, index) => SizedBox(height: 20.h),
           ),
         ),
-        const SizedBox(height: kScaffoldPadding),
+        SizedBox(height: kScaffoldPadding),
         CustomTextField(
           controller: _textController,
           onFieldSubmitted:
@@ -147,7 +148,7 @@ class _GamePageState extends State<GamePage> {
               ? const CustomLoadingIndicator()
               : IconButton(
                   onPressed: _sendMessage,
-                  iconSize: 34,
+                  iconSize: 34.r,
                   icon: const Icon(Icons.chevron_right_rounded),
                 ),
         ),

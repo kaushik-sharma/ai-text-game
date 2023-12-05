@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_data.dart';
 import '../../../../core/constants/app_values.dart';
@@ -17,22 +18,21 @@ class _GameThemePageState extends State<GameThemePage> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: kScaffoldPadding,
           ),
           child: CustomScrollView(
             slivers: [
-              const SliverToBoxAdapter(
-                  child: SizedBox(height: kScaffoldPadding)),
+              SliverToBoxAdapter(child: SizedBox(height: kScaffoldPadding)),
               SliverToBoxAdapter(
                 child: Text(
                   'Select a story theme to start the game:',
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
-                      fontSize: 20),
+                      fontSize: 20.sp),
                 ),
               ),
-              const SliverToBoxAdapter(child: SizedBox(height: 20)),
+              SliverToBoxAdapter(child: SizedBox(height: 20.h)),
               SliverList.separated(
                 itemCount: kStoryThemes.length,
                 itemBuilder: (context, index) => Align(
@@ -43,11 +43,9 @@ class _GameThemePageState extends State<GameThemePage> {
                     isCompact: true,
                   ),
                 ),
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10),
+                separatorBuilder: (context, index) => SizedBox(height: 10.h),
               ),
-              const SliverToBoxAdapter(
-                  child: SizedBox(height: kScaffoldPadding)),
+              SliverToBoxAdapter(child: SizedBox(height: kScaffoldPadding)),
             ],
           ),
         ),

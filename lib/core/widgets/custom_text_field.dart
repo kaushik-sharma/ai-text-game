@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -26,9 +27,9 @@ class CustomTextField extends StatelessWidget {
         errorBorder: _buildInputBorder(Theme.of(context).colorScheme.error),
         focusedErrorBorder:
             _buildInputBorder(Theme.of(context).colorScheme.error),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 25,
-          vertical: 15,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 25.w,
+          vertical: 15.h,
         ),
         suffixIcon: suffix,
       ),
@@ -41,8 +42,8 @@ class CustomTextField extends StatelessWidget {
       ],
       textInputAction: TextInputAction.send,
       onFieldSubmitted: onFieldSubmitted,
-      style: const TextStyle(
-        fontSize: 14,
+      style: TextStyle(
+        fontSize: 14.sp,
         color: Colors.white,
       ),
     );
@@ -50,7 +51,7 @@ class CustomTextField extends StatelessWidget {
 
   OutlineInputBorder _buildInputBorder(Color color) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(30.r),
       borderSide: BorderSide(color: color),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../routes/custom_navigator.dart';
 import '../constants/app_values.dart';
@@ -23,7 +24,7 @@ class UiHelpers {
     required String content,
   }) async {
     final TextStyle actionStyle = TextStyle(
-      fontSize: 12,
+      fontSize: 12.sp,
       color: Theme.of(kNavigatorKey.currentContext!).colorScheme.primary,
     );
 
@@ -31,8 +32,8 @@ class UiHelpers {
       context: kNavigatorKey.currentContext!,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        insetPadding: const EdgeInsets.all(kScaffoldPadding),
-        contentPadding: const EdgeInsets.all(kScaffoldPadding),
+        insetPadding: EdgeInsets.all(kScaffoldPadding),
+        contentPadding: EdgeInsets.all(kScaffoldPadding),
         title: Text(title),
         content: Text(content),
         actions: [

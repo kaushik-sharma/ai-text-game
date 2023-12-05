@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../data/models/message_model.dart';
 import '../../domain/entities/message_entity.dart';
@@ -29,7 +30,7 @@ class TextCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<int>(
       initialData: 0,
       stream: _yieldCharacters(),
       builder: (context, snapshot) => Text(
@@ -37,7 +38,7 @@ class TextCard extends StatelessWidget {
         textAlign: message.role == Role.user ? TextAlign.right : TextAlign.left,
         style: TextStyle(
           color: message.role == Role.user ? Colors.white60 : Colors.white,
-          fontSize: 14,
+          fontSize: 14.sp,
         ),
       ),
     );

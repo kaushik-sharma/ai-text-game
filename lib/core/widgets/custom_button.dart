@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../gen/fonts.gen.dart';
 
@@ -45,7 +46,7 @@ class CustomButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           visualDensity: isCompact ? VisualDensity.compact : null,
           textStyle: TextStyle(
-            fontSize: isCompact ? 13 : 20,
+            fontSize: isCompact ? 13.sp : 20.sp,
             overflow: TextOverflow.ellipsis,
             fontFamily: FontFamily.zenDots,
           ),
@@ -58,7 +59,7 @@ class CustomButton extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           visualDensity: isCompact ? VisualDensity.compact : null,
           textStyle: TextStyle(
-            fontSize: isCompact ? 13 : 18,
+            fontSize: isCompact ? 13.sp : 18.sp,
             overflow: TextOverflow.ellipsis,
             fontFamily: FontFamily.zenDots,
           ),

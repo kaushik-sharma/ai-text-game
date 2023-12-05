@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_data.dart';
 import '../../../../core/constants/app_metadata.dart';
@@ -36,18 +37,18 @@ class _HomePageState extends State<HomePage> {
         child: SizedBox(
           width: double.infinity,
           child: Padding(
-            padding: const EdgeInsets.all(kScaffoldPadding),
+            padding: EdgeInsets.all(kScaffoldPadding),
             child: Stack(
               children: [
                 Positioned(
-                  top: 80,
+                  top: 80.h,
                   left: 0,
                   right: 0,
                   child: Text(
                     kAppName,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 35,
+                      fontSize: 35.sp,
                       color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
@@ -55,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                 Align(
                   alignment: Alignment.center,
                   child: SizedBox(
-                    width: 250,
+                    width: 250.w,
                     child: ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -63,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                       itemCount: items.length,
                       itemBuilder: (context, index) => items[index],
                       separatorBuilder: (context, index) =>
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20.h),
                     ),
                   ),
                 ),
@@ -75,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                     'v$kAppVersion',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 8,
+                      fontSize: 8.sp,
                       color: Theme.of(context)
                           .colorScheme
                           .primary

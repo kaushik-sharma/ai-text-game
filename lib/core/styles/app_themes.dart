@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../gen/fonts.gen.dart';
 
@@ -19,18 +20,18 @@ class AppThemes {
     dialogTheme: DialogTheme(
       backgroundColor: _scaffoldBackgroundColor,
       surfaceTintColor: Colors.transparent,
-      elevation: 8,
+      elevation: 8.r,
       shadowColor: _primaryColor,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(30.r),
         side: const BorderSide(color: _primaryColor),
       ),
-      titleTextStyle: const TextStyle(
-        fontSize: 18,
+      titleTextStyle: TextStyle(
+        fontSize: 18.sp,
         fontFamily: FontFamily.zenDots,
       ),
-      contentTextStyle: const TextStyle(
-        fontSize: 14,
+      contentTextStyle: TextStyle(
+        fontSize: 14.sp,
         fontFamily: FontFamily.zenDots,
       ),
     ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomLoadingIndicator extends StatefulWidget {
   const CustomLoadingIndicator({super.key});
@@ -36,7 +37,7 @@ class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 6,
+      height: 6.h,
       child: ValueListenableBuilder<double>(
         valueListenable: _controllerValue,
         builder: (context, value, child) => ListView.separated(
@@ -45,12 +46,12 @@ class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
           itemCount: (value * _maxDots).floor() + 1,
-          itemBuilder: (context, index) => const CircleAvatar(
+          itemBuilder: (context, index) => CircleAvatar(
             backgroundColor: Colors.white54,
-            minRadius: 3,
-            maxRadius: 3,
+            minRadius: 3.r,
+            maxRadius: 3.r,
           ),
-          separatorBuilder: (context, index) => const SizedBox(width: 5),
+          separatorBuilder: (context, index) => SizedBox(width: 5.w),
         ),
       ),
     );

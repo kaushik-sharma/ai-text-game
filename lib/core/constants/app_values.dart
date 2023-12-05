@@ -1,5 +1,7 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 /// Spacing
-const double kScaffoldPadding = 20;
+final double kScaffoldPadding = 20.r;
 
 /// Durations
 const Duration kSnackBarDuration = Duration(seconds: 3);
