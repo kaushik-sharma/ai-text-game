@@ -11,8 +11,7 @@ class CustomLoadingIndicator extends StatefulWidget {
 class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-  final ValueNotifier<double> _controllerValue = ValueNotifier<double>(0.0);
-  final int _maxDots = 3;
+  final ValueNotifier<int> _count = ValueNotifier<int>(1);
 
   @override
   void initState() {
@@ -22,7 +21,7 @@ class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
       duration: const Duration(milliseconds: 600),
     );
     _controller.addListener(() {
-      _controllerValue.value = _controller.value;
+      _count.value = (_controller.value * 3).floor() + 1;
     });
     _controller.repeat();
   }
@@ -30,7 +29,7 @@ class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
   @override
   void dispose() {
     _controller.dispose();
-    _controllerValue.dispose();
+    _count.dispose();
     super.dispose();
   }
 
@@ -38,14 +37,14 @@ class _CustomLoadingIndicatorState extends State<CustomLoadingIndicator>
   Widget build(BuildContext context) {
     return SizedBox(
       height: 6.h,
-      child: ValueListenableBuilder<double>(
-        valueListenable: _controllerValue,
+      child: ValueListenableBuilder<int>(
+        valueListenable: _count,
         builder: (context, value, child) => ListView.separated(
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
-          itemCount: (value * _maxDots).floor() + 1,
+          itemCount: value,
           itemBuilder: (context, index) => CircleAvatar(
             backgroundColor: Colors.white54,
             minRadius: 3.r,
