@@ -44,7 +44,6 @@ class StorageHelpers {
     return messages
         .map(
           (message) => MessageModel(
-            id: message.id,
             role: message.role,
             content: message.content,
           ),

@@ -8,7 +8,6 @@ part 'message_model.g.dart';
 @freezed
 class MessageModel extends MessageEntity with _$MessageModel {
   const factory MessageModel({
-    required String id,
     required Role role,
     required String content,
   }) = _MessageModel;

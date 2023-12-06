@@ -80,7 +80,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   MessageModel _getUserMessage(String content) {
     return MessageModel(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
       role: Role.user,
       content: content,
     );
