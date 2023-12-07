@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/constants/app_data.dart';
+import '../../../../core/constants/app_values.dart';
+import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../../core/storage/storage.dart';
@@ -21,10 +23,22 @@ class GameRepositoryImpl implements GameRepository {
 
   @override
   Future<Either<Failure, MessageModel>> sendMessage(GameData gameData) async {
-    return await kRepositoryImpl<MessageModel, GameData>(
-      networkInfo: networkInfo,
-      callback: dataSource.sendMessage,
-      callbackParam: gameData,
-    );
+    try {
+      final bool isConnected = await networkInfo.isConnected;
+      if (!isConnected) {
+        throw const InternetException();
+      }
+
+      final MessageModel response = await dataSource.sendMessage(gameData);
+      return Right(response);
+    } on CacheException {
+      return const Left(CacheFailure(kCacheFailureMessage));
+    } on ServerException {
+      return const Left(ServerFailure(kServerFailureMessage));
+    } on InternetException {
+      return const Left(InternetFailure(kInternetFailureMessage));
+    } catch (e) {
+      return const Left(GeneralFailure(kGeneralFailureMessage));
+    }
   }
 }

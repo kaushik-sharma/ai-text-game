@@ -1,9 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/network/network_info.dart';
+import 'core/repositories/base_repository.dart';
 import 'core/storage/storage.dart';
 import 'features/game/data/datasources/game_datasource.dart';
 import 'features/game/data/repositories/game_repository_impl.dart';
@@ -42,6 +42,7 @@ void _injectGame() {
   /// Data sources
   sl.registerLazySingleton<GameDataSource>(
     () => GameDataSourceImpl(
+      dio: sl(),
       sharedPreferences: sl(),
     ),
   );
@@ -55,7 +56,7 @@ void _injectCore() {
 
 Future<void> _injectExternal() async {
   sl.registerLazySingleton(() => InternetConnection());
-  sl.registerLazySingleton(() => Dio());
+  sl.registerLazySingleton(() => dio);
   final SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);

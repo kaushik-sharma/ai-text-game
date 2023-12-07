@@ -15,9 +15,11 @@ abstract class GameDataSource {
 }
 
 class GameDataSourceImpl implements GameDataSource {
+  final Dio dio;
   final SharedPreferences sharedPreferences;
 
   const GameDataSourceImpl({
+    required this.dio,
     required this.sharedPreferences,
   });
 
@@ -26,9 +28,8 @@ class GameDataSourceImpl implements GameDataSource {
     await StorageHelpers.saveGame(
         sharedPreferences, GameData(gameData.theme, [...gameData.messages]));
 
-    final Dio dio = Dio();
     final Response<Map<String, dynamic>> response =
-        await dio.post<Map<String, dynamic>>(
+        await dio.get<Map<String, dynamic>>(
       kChatCompletionUrl,
       data: jsonEncode({
         'messages': gameData.messages.reversed
@@ -42,9 +43,8 @@ class GameDataSourceImpl implements GameDataSource {
       }),
     );
 
-    final int statusCode = response.data!['statusCode'] as int;
-
-    if (statusCode != 200) {
+    final int? statusCode = response.statusCode;
+    if (statusCode == null || statusCode != 200) {
       throw const ServerException();
     }
 
