@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'core/constants/app_metadata.dart';
-import 'core/styles/app_themes.dart';
-import 'core/widgets/custom_scroll_behavior.dart';
+import 'core/core.dart';
 import 'routes/custom_navigator.dart';
 
 void main() {

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/constants/app_data.dart';
-import '../../../../core/constants/app_values.dart';
-import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/core.dart';
 
 class GameThemePage extends StatefulWidget {
   const GameThemePage({super.key});

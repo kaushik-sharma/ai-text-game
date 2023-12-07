@@ -2,9 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'core/network/network_info.dart';
-import 'core/repositories/base_repository.dart';
-import 'core/storage/storage.dart';
+import 'core/core.dart';
 import 'features/game/data/datasources/game_datasource.dart';
 import 'features/game/data/repositories/game_repository_impl.dart';
 import 'features/game/domain/repositories/game_repository.dart';

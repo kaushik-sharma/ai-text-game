@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../core/constants/app_data.dart';
-import '../../../../core/helpers/storage_helpers.dart';
-import '../../../../core/managers/app_manager.dart';
+import '../../../../core/core.dart';
 import '../../../../injection_container.dart' as di;
 import '../../../../injection_container.dart';
 import '../../../../routes/custom_navigator.dart';

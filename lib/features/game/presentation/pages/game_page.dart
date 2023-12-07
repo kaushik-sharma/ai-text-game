@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/constants/app_data.dart';
-import '../../../../core/constants/app_values.dart';
-import '../../../../core/helpers/storage_helpers.dart';
-import '../../../../core/helpers/ui_helpers.dart';
-import '../../../../core/widgets/custom_loading_indicator.dart';
-import '../../../../core/widgets/custom_text_field.dart';
+import '../../../../core/core.dart';
 import '../../../../injection_container.dart';
 import '../../domain/entities/message_entity.dart';
 import '../blocs/game_bloc.dart';

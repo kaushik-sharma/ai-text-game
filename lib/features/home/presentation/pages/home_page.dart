@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/constants/app_data.dart';
-import '../../../../core/constants/app_metadata.dart';
-import '../../../../core/constants/app_values.dart';
-import '../../../../core/helpers/storage_helpers.dart';
-import '../../../../core/helpers/ui_helpers.dart';
-import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/core.dart';
 import '../../../../injection_container.dart';
 import '../../../../routes/custom_navigator.dart';
 
