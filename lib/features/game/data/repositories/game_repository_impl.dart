@@ -27,13 +27,13 @@ class GameRepositoryImpl implements GameRepository {
       final MessageModel response = await dataSource.sendMessage(gameData);
       return Right(response);
     } on CacheException {
-      return const Left(CacheFailure(kCacheFailureMessage));
+      return const Left(CacheFailure());
     } on ServerException {
-      return const Left(ServerFailure(kServerFailureMessage));
+      return const Left(ServerFailure());
     } on InternetException {
-      return const Left(InternetFailure(kInternetFailureMessage));
+      return const Left(InternetFailure());
     } catch (e) {
-      return const Left(GeneralFailure(kGeneralFailureMessage));
+      return const Left(GeneralFailure());
     }
   }
 }

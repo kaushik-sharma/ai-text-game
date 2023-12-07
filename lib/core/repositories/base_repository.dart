@@ -5,21 +5,19 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../constants/app_urls.dart';
 
-final dio = Dio(_BaseRepository.baseOptions)
-  ..interceptors.addAll(_BaseRepository.interceptors);
-
-final _retryDio = _getRetryDio();
+final dio = _BaseRepository.dio;
+final _retryDio = _BaseRepository.retryDio;
 
 class _BaseRepository {
   static const Duration _defaultTimeout = Duration(seconds: 30);
-  static final BaseOptions baseOptions = BaseOptions(
+  static final BaseOptions _baseOptions = BaseOptions(
     baseUrl: kBaseUrl,
     connectTimeout: _defaultTimeout,
     receiveTimeout: _defaultTimeout,
     sendTimeout: _defaultTimeout,
   );
 
-  static final List<Interceptor> interceptors = List.unmodifiable(
+  static final List<Interceptor> _interceptors = List.unmodifiable(
     [
       PrettyDioLogger(
         requestBody: true,
@@ -28,13 +26,12 @@ class _BaseRepository {
       _RetryInterceptor(),
     ],
   );
-}
 
-Dio _getRetryDio() {
-  return Dio(dio.options)
+  static Dio get dio => Dio(_baseOptions)..interceptors.addAll(_interceptors);
+
+  static Dio get retryDio => Dio(_baseOptions)
     ..interceptors.addAll(
-      dio.interceptors
-          .where((interceptor) => interceptor is! _RetryInterceptor),
+      _interceptors.where((interceptor) => interceptor is! _RetryInterceptor),
     );
 }
 
