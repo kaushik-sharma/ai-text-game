@@ -9,9 +9,9 @@ class UiHelpers {
     kNavigatorKey.currentState?.focusNode.requestFocus(FocusNode());
   }
 
-  static void showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
+  static void showSnackBar(String message) {
+    ScaffoldMessenger.of(kNavigatorKey.currentContext!).clearSnackBars();
+    ScaffoldMessenger.of(kNavigatorKey.currentContext!).showSnackBar(
       SnackBar(
         content: Text(message),
         duration: const Duration(seconds: 3),

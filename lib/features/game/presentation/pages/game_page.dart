@@ -92,7 +92,7 @@ class _GamePageState extends State<GamePage> {
         _isLoading = false;
       },
       chatCompletionFailure: (error) async {
-        UiHelpers.showSnackBar(context, error);
+        UiHelpers.showSnackBar(error);
 
         /// End current game on initialization failure
         if (_messages.length == 1) {
