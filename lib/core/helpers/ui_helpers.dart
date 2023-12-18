@@ -10,8 +10,8 @@ class UiHelpers {
   }
 
   static void showSnackBar(String message) {
-    ScaffoldMessenger.of(kNavigatorKey.currentContext!).clearSnackBars();
-    ScaffoldMessenger.of(kNavigatorKey.currentContext!).showSnackBar(
+    kScaffoldMessengerKey.currentState!.clearSnackBars();
+    kScaffoldMessengerKey.currentState!.showSnackBar(
       SnackBar(
         content: Text(message),
         duration: const Duration(seconds: 3),

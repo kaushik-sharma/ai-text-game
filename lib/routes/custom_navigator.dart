@@ -7,6 +7,8 @@ import '../features/home/presentation/pages/home_page.dart';
 import '../features/splash/presentation/pages/splash_page.dart';
 
 final GlobalKey<NavigatorState> kNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<ScaffoldMessengerState> kScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 enum AppRoute {
   splash(name: '/splash'),
