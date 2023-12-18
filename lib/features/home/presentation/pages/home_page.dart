@@ -105,10 +105,10 @@ class _HomePageState extends State<HomePage> {
 
     if (!mounted) return;
     final String? theme =
-        await Navigator.pushNamed(context, AppRoutes.gameTheme) as String?;
+        await Navigator.pushNamed(context, AppRoute.gameTheme.name) as String?;
     if (theme == null) return;
     if (!mounted) return;
-    await Navigator.pushNamed(context, AppRoutes.game,
+    await Navigator.pushNamed(context, AppRoute.game.name,
         arguments: {'theme': theme});
 
     kSavedGame = await StorageHelpers.getSavedGame(sl());
@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _continueGame() async {
     await Navigator.pushNamed(
       context,
-      AppRoutes.game,
+      AppRoute.game.name,
       arguments: {
         'theme': kSavedGame!.theme,
         'messages': kSavedGame!.messages,

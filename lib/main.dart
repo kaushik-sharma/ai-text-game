@@ -20,7 +20,7 @@ class _App extends StatelessWidget {
         title: kAppName,
         theme: AppThemes.dark,
         navigatorKey: kNavigatorKey,
-        initialRoute: AppRoutes.splash,
+        initialRoute: AppRoute.splash.name,
         onGenerateRoute: CustomNavigator.onGenerateRoute,
         scrollBehavior: const CustomScrollBehavior(),
       ),

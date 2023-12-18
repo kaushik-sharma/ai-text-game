@@ -35,6 +35,6 @@ class _SplashPageState extends State<SplashPage> {
 
     if (!mounted) return;
     Navigator.pop(context);
-    Navigator.pushReplacementNamed(context, AppRoutes.home);
+    Navigator.pushReplacementNamed(context, AppRoute.home.name);
   }
 }
