@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/core.dart';
+import 'features/splash/presentation/pages/splash_page.dart';
 import 'routes/custom_navigator.dart';
 
 void main() {
@@ -21,7 +22,7 @@ class _App extends StatelessWidget {
         theme: AppThemes.dark,
         navigatorKey: kNavigatorKey,
         scaffoldMessengerKey: kScaffoldMessengerKey,
-        initialRoute: AppRoute.splash.name,
+        home: const SplashPage(),
         onGenerateRoute: CustomNavigator.onGenerateRoute,
         scrollBehavior: const CustomScrollBehavior(),
       ),

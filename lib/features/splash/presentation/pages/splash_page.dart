@@ -34,7 +34,6 @@ class _SplashPageState extends State<SplashPage> {
     kSavedGame = await StorageHelpers.getSavedGame(sl<SharedPreferences>());
 
     if (!mounted) return;
-    Navigator.pop(context);
     Navigator.pushReplacementNamed(context, AppRoute.home.name);
   }
 }

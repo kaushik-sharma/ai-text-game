@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../constants/app_metadata.dart';
+import '../core.dart';
 
 class AppManager {
   static Future<void> init() async {
