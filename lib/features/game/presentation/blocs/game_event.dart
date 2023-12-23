@@ -7,5 +7,5 @@ class GameEvent with _$GameEvent {
   const factory GameEvent.sendMessage(String theme,
       List<MessageEntity> prevMessages, String messageContent) = _SendMessage;
 
-  const factory GameEvent.animationComplete() = _AnimationComplete;
+  const factory GameEvent.saveGame(GameData? gameData) = _SaveGame;
 }

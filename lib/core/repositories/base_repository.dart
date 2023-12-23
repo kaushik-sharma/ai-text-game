@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-import '../constants/app_urls.dart';
+import '../core.dart';
 
 final dio = _BaseRepository.dio;
 final _retryDio = _BaseRepository.retryDio;

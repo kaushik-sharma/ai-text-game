@@ -5,6 +5,7 @@ import '../../../../core/core.dart';
 import '../../../../injection_container.dart' as di;
 import '../../../../injection_container.dart';
 import '../../../../routes/custom_navigator.dart';
+import '../../../game/presentation/blocs/game_bloc.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -31,7 +32,8 @@ class _SplashPageState extends State<SplashPage> {
     await di.init();
     await AppManager.init();
 
-    kSavedGame = await StorageHelpers.getSavedGame(sl<SharedPreferences>());
+    final gameData = await StorageHelpers.getSavedGame(sl<SharedPreferences>());
+    sl<GameBloc>().add(GameEvent.saveGame(gameData));
 
     if (!mounted) return;
     Navigator.pushReplacementNamed(context, AppRoute.home.name);

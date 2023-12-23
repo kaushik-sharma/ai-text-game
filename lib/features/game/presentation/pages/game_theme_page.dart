@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/core.dart';
+import '../../../../routes/custom_navigator.dart';
 
 class GameThemePage extends StatefulWidget {
   const GameThemePage({super.key});
@@ -37,7 +38,11 @@ class _GameThemePageState extends State<GameThemePage> {
                   alignment: Alignment.centerLeft,
                   child: CustomButton.secondary(
                     title: kStoryThemes[index],
-                    onTap: () => _startGame(kStoryThemes[index]),
+                    onTap: () => Navigator.pushReplacementNamed(
+                      context,
+                      AppRoute.game.name,
+                      arguments: {'theme': kStoryThemes[index]},
+                    ),
                     isCompact: true,
                   ),
                 ),
@@ -49,9 +54,5 @@ class _GameThemePageState extends State<GameThemePage> {
         ),
       ),
     );
-  }
-
-  void _startGame(String theme) {
-    Navigator.pop<String>(context, theme);
   }
 }

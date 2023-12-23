@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/core.dart';
 import '../../../../injection_container.dart';
+import '../../data/models/message_model.dart';
 import '../../domain/entities/message_entity.dart';
 import '../blocs/game_bloc.dart';
 import '../widgets/text_card.dart';
@@ -31,15 +33,17 @@ class _GamePageState extends State<GamePage> {
 
   bool _isLoading = false;
 
+  bool _playAnimation = false;
+
   @override
   void initState() {
     super.initState();
 
     if (widget.messages == null) {
       _bloc.add(GameEvent.initializeGame(widget.theme));
-      return;
+    } else {
+      _messages.addAll([...widget.messages!]);
     }
-    _messages.addAll([...widget.messages!]);
   }
 
   @override
@@ -90,14 +94,15 @@ class _GamePageState extends State<GamePage> {
       chatCompletionSuccess: (message) {
         _messages.insert(0, message);
         _isLoading = false;
+        _playAnimation = true;
       },
       chatCompletionFailure: (error) async {
         UiHelpers.showSnackBar(error);
 
         /// End current game on initialization failure
         if (_messages.length == 1) {
-          await StorageHelpers.resetGame(sl());
-          kSavedGame = null;
+          await StorageHelpers.resetGame(sl<SharedPreferences>());
+          _bloc.add(const GameEvent.saveGame(null));
           if (!mounted) return;
           Navigator.pop(context);
           return;
@@ -109,7 +114,7 @@ class _GamePageState extends State<GamePage> {
 
         _isLoading = false;
       },
-      animationCompleteSuccess: () {},
+      gameSaveSuccess: () {},
     );
   }
 
@@ -125,11 +130,11 @@ class _GamePageState extends State<GamePage> {
             padding: EdgeInsets.only(top: kScaffoldPadding),
             itemCount: messages.length,
             itemBuilder: (context, index) => TextCard(
-              key: UniqueKey(),
               message: messages[index],
-              shouldAnimate: index == 0 && shouldAnimate,
-              onAnimComplete: () =>
-                  _bloc.add(const GameEvent.animationComplete()),
+              play: _playAnimation &&
+                  index == 0 &&
+                  messages[index].role == Role.assistant,
+              onAnimationComplete: () => _playAnimation = false,
             ),
             separatorBuilder: (context, index) => SizedBox(height: 20.h),
           ),
@@ -137,9 +142,8 @@ class _GamePageState extends State<GamePage> {
         SizedBox(height: kScaffoldPadding),
         CustomTextField(
           controller: _textController,
-          onFieldSubmitted:
-              _isLoading || shouldAnimate ? null : (_) => _sendMessage(),
-          suffix: _isLoading || shouldAnimate
+          onFieldSubmitted: _isLoading ? null : (_) => _sendMessage(),
+          suffix: _isLoading
               ? const CustomLoadingIndicator()
               : IconButton(
                   onPressed: _sendMessage,

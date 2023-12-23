@@ -14,6 +14,5 @@ class GameState with _$GameState {
   const factory GameState.chatCompletionFailure(String error) =
       _ChatCompletionFailure;
 
-  const factory GameState.animationCompleteSuccess() =
-      _AnimationCompleteSuccess;
+  const factory GameState.gameSaveSuccess() = _GameSaveSuccess;
 }

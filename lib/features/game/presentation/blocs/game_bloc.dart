@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../core/constants/app_data.dart';
-import '../../../../core/core.dart';
 import '../../data/models/message_model.dart';
 import '../../domain/entities/message_entity.dart';
 import '../../domain/usecases/send_message_usecase.dart';
@@ -13,15 +11,15 @@ part 'game_bloc.freezed.dart';
 part 'game_event.dart';
 part 'game_state.dart';
 
-bool shouldAnimate = false;
-
 class GameBloc extends Bloc<GameEvent, GameState> {
+  GameData? savedGame;
+
   final SendMessageUseCase sendMessageUseCase;
 
   GameBloc({required this.sendMessageUseCase}) : super(const _Initial()) {
     on<_InitializeGame>(_onInitializeGameEvent);
     on<_SendMessage>(_onSendMessageEvent);
-    on<_AnimationComplete>(_onAnimationCompleteEvent);
+    on<_SaveGame>(_onSaveGame);
   }
 
   Future<void> _onInitializeGameEvent(
@@ -42,10 +40,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     );
     failureOrSuccess.fold<void>(
       (left) => emit(_ChatCompletionFailure(left.message)),
-      (right) {
-        shouldAnimate = true;
-        emit(_ChatCompletionSuccess(right));
-      },
+      (right) => emit(_ChatCompletionSuccess(right)),
     );
   }
 
@@ -66,17 +61,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     );
     failureOrSuccess.fold<void>(
       (left) => emit(_ChatCompletionFailure(left.message)),
-      (right) {
-        shouldAnimate = true;
-        emit(_ChatCompletionSuccess(right));
-      },
+      (right) => emit(_ChatCompletionSuccess(right)),
     );
-  }
-
-  void _onAnimationCompleteEvent(
-      _AnimationComplete event, Emitter<GameState> emit) {
-    shouldAnimate = false;
-    emit(const _AnimationCompleteSuccess());
   }
 
   MessageModel _getUserMessage(String content) {
@@ -85,4 +71,16 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       content: content,
     );
   }
+
+  void _onSaveGame(_SaveGame event, Emitter<GameState> emit) {
+    savedGame = event.gameData;
+    emit(const _GameSaveSuccess());
+  }
+}
+
+class GameData {
+  final String theme;
+  final List<MessageEntity> messages;
+
+  const GameData(this.theme, this.messages);
 }

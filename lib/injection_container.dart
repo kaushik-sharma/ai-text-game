@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,30 +19,32 @@ Future<void> init() async {
 }
 
 void _injectGame() {
-  /// Blocs
-  sl.registerFactory(
-    () => GameBloc(
-      sendMessageUseCase: sl(),
+  /// Data sources
+  sl.registerLazySingleton<GameDataSource>(
+    () => GameDataSourceImpl(
+      dio: sl<Dio>(),
+      sharedPreferences: sl<SharedPreferences>(),
     ),
   );
-
-  /// Use cases
-  sl.registerLazySingleton(() => SendMessageUseCase(sl()));
 
   /// Repositories
   sl.registerLazySingleton<GameRepository>(
     () => GameRepositoryImpl(
-      dataSource: sl(),
-      networkInfo: sl(),
-      storage: sl(),
+      dataSource: sl<GameDataSource>(),
+      networkInfo: sl<NetworkInfo>(),
+      storage: sl<Storage>(),
     ),
   );
 
-  /// Data sources
-  sl.registerLazySingleton<GameDataSource>(
-    () => GameDataSourceImpl(
-      dio: sl(),
-      sharedPreferences: sl(),
+  /// Use cases
+  sl.registerLazySingleton<SendMessageUseCase>(
+    () => SendMessageUseCase(sl<GameRepository>()),
+  );
+
+  /// Blocs
+  sl.registerSingleton<GameBloc>(
+    GameBloc(
+      sendMessageUseCase: sl<SendMessageUseCase>(),
     ),
   );
 }

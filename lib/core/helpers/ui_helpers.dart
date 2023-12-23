@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../routes/custom_navigator.dart';
-import '../constants/app_values.dart';
+import '../core.dart';
 
 class UiHelpers {
   static void hideKeyboard() {
