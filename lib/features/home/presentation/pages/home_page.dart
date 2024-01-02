@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/core.dart';
 import '../../../../injection_container.dart';
-import '../../../../routes/custom_navigator.dart';
+import '../../../../routes/router_config.dart';
 import '../../../game/presentation/blocs/game_bloc.dart';
 
 class HomePage extends StatefulWidget {
@@ -125,17 +128,23 @@ class _HomePageState extends State<HomePage> {
     _bloc.add(const GameEvent.saveGame(null));
 
     if (!mounted) return;
-    Navigator.pushNamed(context, AppRoute.gameTheme.name);
+    // Navigator.pushNamed(context, AppRoute.gameTheme.name);
+    context.goNamed(Routes.gameTheme.name);
   }
 
   void _continueGame() {
-    Navigator.pushNamed(
-      context,
-      AppRoute.game.name,
-      arguments: {
-        'theme': _bloc.savedGame!.theme,
-        'messages': _bloc.savedGame!.messages,
-      },
+    // Navigator.pushNamed(
+    //   context,
+    //   AppRoute.game.name,
+    //   arguments: {
+    //     'theme': _bloc.savedGame!.theme,
+    //     'messages': _bloc.savedGame!.messages,
+    //   },
+    // );
+    context.goNamed(
+      Routes.game.name,
+      pathParameters: {'theme': _bloc.savedGame!.theme},
+      queryParameters: {'messages': jsonEncode(_bloc.savedGame!.messages)},
     );
   }
 }

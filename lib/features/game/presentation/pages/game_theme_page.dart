@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/core.dart';
-import '../../../../routes/custom_navigator.dart';
+import '../../../../routes/router_config.dart';
 
 class GameThemePage extends StatefulWidget {
   const GameThemePage({super.key});
@@ -37,12 +38,16 @@ class _GameThemePageState extends State<GameThemePage> {
                 itemBuilder: (context, index) => Align(
                   alignment: Alignment.centerLeft,
                   child: CustomButton.secondary(
-                    title: kStoryThemes[index],
-                    onTap: () => Navigator.pushReplacementNamed(
-                      context,
-                      AppRoute.game.name,
-                      arguments: {'theme': kStoryThemes[index]},
+                    // onTap: () => Navigator.pushReplacementNamed(
+                    //   context,
+                    //   AppRoute.game.name,
+                    //   arguments: {'theme': kStoryThemes[index]},
+                    // ),
+                    onTap: () => context.goNamed(
+                      Routes.game.name,
+                      pathParameters: {'theme': kStoryThemes[index]},
                     ),
+                    title: kStoryThemes[index],
                     isCompact: true,
                   ),
                 ),

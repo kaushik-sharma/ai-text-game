@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/message_entity.dart';
@@ -14,6 +16,15 @@ class MessageModel extends MessageEntity with _$MessageModel {
 
   factory MessageModel.fromJson(Map<String, dynamic> json) =>
       _$MessageModelFromJson(json);
+
+  static List<MessageEntity> fromJsonList(String json) {
+    final decodedList = jsonDecode(json) as List<dynamic>;
+    final messageMaps =
+        List.castFrom<dynamic, Map<String, dynamic>>(decodedList);
+    final messages =
+        messageMaps.map((map) => MessageModel.fromJson(map)).toList();
+    return messages;
+  }
 }
 
 enum Role {

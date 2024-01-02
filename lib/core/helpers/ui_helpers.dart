@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../routes/custom_navigator.dart';
+import '../../main.dart';
+import '../../routes/router_config.dart';
 import '../core.dart';
 
 class UiHelpers {
   static void hideKeyboard() {
-    kNavigatorKey.currentState?.focusNode.requestFocus(FocusNode());
+    router.configuration.navigatorKey.currentState!.focusNode
+        .requestFocus(FocusNode());
   }
 
   static void showSnackBar(String message) {
@@ -25,11 +28,13 @@ class UiHelpers {
   }) async {
     final TextStyle actionStyle = TextStyle(
       fontSize: 12.sp,
-      color: Theme.of(kNavigatorKey.currentContext!).colorScheme.primary,
+      color: Theme.of(router.configuration.navigatorKey.currentContext!)
+          .colorScheme
+          .primary,
     );
 
     return await showDialog<bool>(
-      context: kNavigatorKey.currentContext!,
+      context: router.configuration.navigatorKey.currentContext!,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         insetPadding: EdgeInsets.all(kScaffoldPadding),
@@ -38,20 +43,16 @@ class UiHelpers {
         content: Text(content),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop<bool>(
-              kNavigatorKey.currentContext!,
-              false,
-            ),
+            onPressed: () => router.configuration.navigatorKey.currentContext!
+                .pop<bool>(false),
             child: Text(
               'No',
               style: actionStyle,
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.pop<bool>(
-              kNavigatorKey.currentContext!,
-              true,
-            ),
+            onPressed: () => router.configuration.navigatorKey.currentContext!
+                .pop<bool>(true),
             child: Text(
               'Yes',
               style: actionStyle,
