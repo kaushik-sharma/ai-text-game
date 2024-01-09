@@ -25,12 +25,14 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: Routes.splash.name,
       path: '/',
-      pageBuilder: (context, state) => _buildPage(state.pageKey, const SplashPage()),
+      pageBuilder: (context, state) =>
+          _buildPage(state.pageKey, const SplashPage()),
     ),
     GoRoute(
       name: Routes.home.name,
       path: '/${Routes.home.name}',
-      pageBuilder: (context, state) => _buildPage(state.pageKey, const HomePage()),
+      pageBuilder: (context, state) =>
+          _buildPage(state.pageKey, const HomePage()),
       routes: [
         GoRoute(
           name: Routes.gameTheme.name,

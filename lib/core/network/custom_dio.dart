@@ -3,12 +3,11 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-import '../core.dart';
+import '../constants/constants.dart';
 
-final dio = _BaseRepository.dio;
-final _retryDio = _BaseRepository.retryDio;
+final _retryDio = CustomDio.retryDio;
 
-class _BaseRepository {
+class CustomDio {
   static const Duration _defaultTimeout = Duration(seconds: 30);
   static final BaseOptions _baseOptions = BaseOptions(
     baseUrl: kBaseUrl,
@@ -27,7 +26,8 @@ class _BaseRepository {
     ],
   );
 
-  static Dio get dio => Dio(_baseOptions)..interceptors.addAll(_interceptors);
+  static Dio get instance =>
+      Dio(_baseOptions)..interceptors.addAll(_interceptors);
 
   static Dio get retryDio => Dio(_baseOptions)
     ..interceptors.addAll(

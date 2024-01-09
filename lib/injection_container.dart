@@ -51,14 +51,14 @@ void _injectGame() {
 
 void _injectCore() {
   sl.registerLazySingleton<NetworkInfo>(
-      () => NetworkInfoImpl(internetConnection: sl()));
+      () => NetworkInfoImpl(internetConnection: sl<InternetConnection>()));
   sl.registerLazySingleton<Storage>(() => const StorageImpl());
 }
 
 Future<void> _injectExternal() async {
-  sl.registerLazySingleton(() => InternetConnection());
-  sl.registerLazySingleton(() => dio);
+  sl.registerLazySingleton<InternetConnection>(() => InternetConnection());
+  sl.registerLazySingleton<Dio>(() => CustomDio.instance);
   final SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
-  sl.registerLazySingleton(() => sharedPreferences);
+  sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 }
